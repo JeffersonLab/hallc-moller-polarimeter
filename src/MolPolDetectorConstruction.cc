@@ -479,8 +479,6 @@ G4VPhysicalVolume* MolPolDetectorConstruction::Construct() {
   SDman->AddNewDetector(Q2EXSD);
   SDman->AddNewDetector(Q3ENSD);
   SDman->AddNewDetector(Q3EXSD);
-  SDman->AddNewDetector(Q4ENSD);
-  SDman->AddNewDetector(Q4EXSD);
   SDman->AddNewDetector(DETSD );
   SDman->AddNewDetector(DETSD2);
   SDman->AddNewDetector(APPSD1);
@@ -505,13 +503,14 @@ G4VPhysicalVolume* MolPolDetectorConstruction::Construct() {
   new G4PVPlacement(0,G4ThreeVector(0,0,pQ3Pos_Z + pQ3HL ), Q3EXLogical,"VP.Q3.Exit",world_log,0,0,fCheckOverlaps);
 
   // Virtual Plane immediately after target :: these six lines can safely be removed when no longer needed. -Eric King
+  /*
   G4LogicalVolume* TargVPLogical = new G4LogicalVolume(VBSolid, Vacuum, "TargVPLogical",0,0,0);
   TargVPLogical->SetVisAttributes(VacVisAtt);
   MolPolDetector* TARGVP = new MolPolDetector("targ",16);
   SDman->AddNewDetector(TARGVP);
   TargVPLogical->SetSensitiveDetector(TARGVP);
   new G4PVPlacement(0,G4ThreeVector(0,0,pMTATHLZ + 0.1 * mm ), TargVPLogical,"VP.Targ.Exit",Q6MagLogical,0,0,fCheckOverlaps);
-
+  */
   //////////////////////////////////////////////////////////////  (╯°□°）╯︵ ┻━┻
     //Pb DETECTOR AND BOX
     G4double pMDBXHLX3   = 20.00 * cm;  G4double pMDBXHLY3   = 14.00 * cm;  G4double pMDBXHLZ3   = 23.00 * cm;
