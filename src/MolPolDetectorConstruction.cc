@@ -185,11 +185,11 @@ G4VPhysicalVolume* MolPolDetectorConstruction::Construct() {
 
   G4double ChamExitRO = 10.477 * cm;
   G4double ChamExitRI = 10.160 * cm;
-  G4double ChamExitH = 11.455 * cm;
+  G4double ChamExitH = 5.0 * cm;
   
   G4double ChamExit_X = 0.0 * cm;
-  G4double ChamExit_Y = 0.0 * cm; //not sure what this actually is
-  G4double ChamExit_Z = 42.545 * cm;
+  G4double ChamExit_Y = 0.0 * cm; 
+  G4double ChamExit_Z = 47.50 * cm;
 
   G4VSolid*ChamExit = new G4Tubs( "ChamTubExit", ChamberZeroR, ChamExitRO,ChamExitH, 0.0, 360.0*deg);
   G4VSolid*ChamExit2 = new G4Tubs( "ChamTubExit2", ChamberZeroR, ChamExitRI, ChamExitH, 0.0, 360.0*deg);
@@ -230,13 +230,13 @@ G4VPhysicalVolume* MolPolDetectorConstruction::Construct() {
 
   G4double BPRO1 = 12.70 * cm;
   G4double BPRI1 = 12.5476 * cm;
-  G4double BPH1 = 131.445 * cm;
+  G4double BPH1 = 177.77 * cm;
   G4double BPZeroR = 0.0 * cm;
 
-  G4double BP1_X = 34.00 * cm;
+  G4double BP1_X = 36.0 * cm;
   G4double BP1_Y = 0.0 * cm;
-  G4double BP1_Z = 977.82 * cm; 
-  G4double BP2_X = -34.00 * cm;
+  G4double BP1_Z = 931.535 * cm; 
+  G4double BP2_X = -36.0 * cm;
 
   G4VSolid*BPipe1 = new G4Tubs("B_Pipe1", BPZeroR, BPRO1, BPH1, 0.0, 360.0*deg);
   G4VSolid*BPipe2 = new G4Tubs("B_PipeIn", BPZeroR, BPRI1, BPH1, 0.0, 360.0*deg);
@@ -513,8 +513,8 @@ G4VPhysicalVolume* MolPolDetectorConstruction::Construct() {
   */
   //////////////////////////////////////////////////////////////  (╯°□°）╯︵ ┻━┻
     //Pb DETECTOR AND BOX
-    G4double pMDBXHLX3   = 20.00 * cm;  G4double pMDBXHLY3   = 14.00 * cm;  G4double pMDBXHLZ3   = 23.00 * cm;
-    G4double pMDBXPos_X3   =  42.099 * cm;  G4double pMDBXPos_Y3   = 0 * cm;  G4double pMDBXPos_Z3   = 1120.8 * cm; 
+    G4double pMDBXHLX3   = 10.00 * cm;  G4double pMDBXHLY3   = 7.00 * cm;  G4double pMDBXHLZ3   = 11.5 * cm;
+    G4double pMDBXPos_X3   =  46.08 * cm;  G4double pMDBXPos_Y3   = 0 * cm;  G4double pMDBXPos_Z3   = 1120.8 * cm; 
 
 
     G4RotationMatrix* pRot93 = new G4RotationMatrix();
@@ -531,8 +531,8 @@ G4VPhysicalVolume* MolPolDetectorConstruction::Construct() {
 
  //////////////////////////////////////////////////////////////  (╯°□°）╯︵ ┻━┻
     //Pb DETECTOR 2 AND BOX
-    G4double pMDBXHLX4   = 20.00 * cm;  G4double pMDBXHLY4   = 14.00 * cm;  G4double pMDBXHLZ4   = 23.00 * cm;
-    G4double pMDBXPos_X4   = -42.099 * cm;  G4double pMDBXPos_Y4   = 0 * cm;  G4double pMDBXPos_Z4   = 1120.8 * cm; 
+    G4double pMDBXHLX4   = 10.00 * cm;  G4double pMDBXHLY4   = 7.00 * cm;  G4double pMDBXHLZ4   = 11.50 * cm;
+    G4double pMDBXPos_X4   = -46.08 * cm;  G4double pMDBXPos_Y4   = 0 * cm;  G4double pMDBXPos_Z4   = 1120.8 * cm; 
 
 
     G4RotationMatrix* pRotLG2 = new G4RotationMatrix();
@@ -551,10 +551,10 @@ G4VPhysicalVolume* MolPolDetectorConstruction::Construct() {
 
  //X, Y and Z Dimmensions
 	
-    G4double HODOX_DIM = 1.2 * cm;
-    G4double HODOY_DIM = 8.0 * cm;
-    G4double HODOZ_DIM = 0.8 * cm;
-    G4double HODOSplitY = 4.0 * cm;
+    G4double HODOX_DIM = 0.6 * cm;
+    G4double HODOY_DIM = 4.0 * cm;
+    G4double HODOZ_DIM = 0.4 * cm;
+    G4double HODOSplitY = 2.0 * cm;
 
     G4RotationMatrix* pRotH1 = new G4RotationMatrix();
     pRotH1->rotateY(3.25*deg);
@@ -579,8 +579,8 @@ G4VPhysicalVolume* MolPolDetectorConstruction::Construct() {
 	
     //Y positions
     G4double HODOY   = 0.0 * cm;
-    G4double HODOSplitNegY = -4.0 * cm;
-    G4double HODOSplitPosY = 4.0 * cm;
+    G4double HODOSplitNegY = -2.0 * cm;
+    G4double HODOSplitPosY = 2.0 * cm;
 
     //Z positions
     //Z position of the middle of the entire hodoscope: 1119.8 cm
@@ -588,8 +588,8 @@ G4VPhysicalVolume* MolPolDetectorConstruction::Construct() {
     // z position of nth left box = 1119.8 - HODOX_DIM*sin(pRotH1)*(n-1)
     //'' '' ''  nth right box = 1119.8 + HODOX_DIM*sin(pRotH1)*(n-1)
 
-    G4double L1_Z = 1100.0 - 0.6*sin(Htheta); //initial offset because there is no centeral box (#of boxes is an even number)
-    G4double R1_Z = 1100.0 + 0.6*sin(Htheta);
+    G4double L1_Z = 1109.0 - 0.6*sin(Htheta); //initial offset because there is no centeral box (#of boxes is an even number)
+    G4double R1_Z = 1109.0 + 0.6*sin(Htheta);
     
     G4double L1Z = L1_Z * cm;                                  
     G4double L2Z = (L1_Z - (1.2*sin(Htheta)*(2-1))) * cm;      
@@ -746,10 +746,10 @@ G4VPhysicalVolume* MolPolDetectorConstruction::Construct() {
 
  //X, Y and Z Dimmensions
 	
-    G4double HODOX_DIM_2 = 1.2 * cm;
-    G4double HODOY_DIM_2 = 8.0 * cm;
-    G4double HODOZ_DIM_2 = 0.8 * cm;
-    G4double HODOSplitY_2 = 4.0 * cm;
+    G4double HODOX_DIM_2 = 0.6 * cm;
+    G4double HODOY_DIM_2 = 4.0 * cm;
+    G4double HODOZ_DIM_2 = 0.4 * cm;
+    G4double HODOSplitY_2 = 2.0 * cm;
 
  G4double Htheta_2 = -3.25 * deg;
 	
@@ -772,17 +772,17 @@ G4VPhysicalVolume* MolPolDetectorConstruction::Construct() {
 	
     //Y and Z positions
     G4double HODOY_2   = 0 * cm;
-    G4double HODOSplitNegY_2 = -4.0 * cm;
-    G4double HODOSplitPosY_2 = 4.0 * cm;
+    G4double HODOSplitNegY_2 = -2.0 * cm;
+    G4double HODOSplitPosY_2 = 2.0 * cm;
 
 //Z positions
     //Z position of the middle of the entire hodoscope: 1119.8 cm
     //nth box has a z-offset of 1.2*sin(3.25)*(n-1)
-    // z position of nth left box = 1119.8 - HODOX_DIM*sin(pRotH1)*(n-1)
+    // z position of nth left box = 1100.3 - HODOX_DIM*sin(pRotH1)*(n-1)
     //'' '' ''  nth right box = 1119.8 + HODOX_DIM*sin(pRotH1)*(n-1)
 
-    G4double L1_Z_2 = 1100.3 + 0.6*sin(Htheta); //initial offset because there is no centeral box (#of boxes is an even number)
-    G4double R1_Z_2 = 1100.3 - 0.6*sin(Htheta);
+    G4double L1_Z_2 = 1109.0 + 0.6*sin(Htheta); //initial offset because there is no centeral box (#of boxes is an even number)
+    G4double R1_Z_2 = 1109.0 - 0.6*sin(Htheta);
     
     G4double L1Z_2 = L1_Z * cm;                                  
     G4double L2Z_2 = (L1_Z + (1.2*sin(Htheta)*(2-1))) * cm;      
