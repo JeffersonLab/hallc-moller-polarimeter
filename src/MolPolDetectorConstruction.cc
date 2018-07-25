@@ -563,18 +563,26 @@ G4VPhysicalVolume* MolPolDetectorConstruction::Construct() {
 	
     //X positions of each hodoscope segment
     //The middle of the hodoscope is located at x= 20.411cm 
-    //The first hodoscope to the left (L1) of the center is centered at x=21.068, to the right of the center (R1) x=19.868
+    //The first hodoscope to the left (L1) of the center is centered at x=41.391+0.6, to the right of the center (R1) x=41.391-0.6
     //The formula to find the center point of the nth hodoscope to the left: 21.068 + 1.2*(n-1)
     // For the right: 19.868 - 1.2*(n-1)
     
-    G4double L1 = 41.391+0.6;
-    G4double R1 = 41.391-0.6;
+    G4double distBetween = 2.0*HODOX_DIM/cm; 
 
-    G4double L1X   = L1 * cm;               G4double L6X = (L1+1.2*(6-1)) * cm;    G4double R4X   = (R1-1.2*(4-1)) * cm;
-    G4double L2X   = (L1 +1.2*(2-1)) * cm;  G4double L7X   = (L1+1.2*(7-1)) * cm;  G4double R5X   = (R1-1.2*(5-1)) * cm;
-    G4double L3X   = (L1+1.2*(3-1)) * cm;   G4double R1X   = R1 * cm;              G4double R6X   = (R1-1.2*(6-1)) * cm;
-    G4double L4X   = (L1+1.2*(4-1)) * cm;   G4double R2X   = (R1-1.2*(2-1)) * cm;  G4double R7X   =  (R1-1.2*(7-1)) * cm;	
-    G4double L5X   = (L1+1.2*(5-1)) * cm;   G4double R3X   = (R1-1.2*(3-1)) * cm;  
+    //TODO: What is the z position??? For now assumption is 1109.0cm
+    G4double HODO_ZPOS = 1109.0;//cm
+    G4double L1_Z = HODO_ZPOS - HODOX_DIM/cm*sin(Htheta); //initial offset because there is no centeral box (#of boxes is an even number)
+    G4double R1_Z = HODO_ZPOS + HODOX_DIM/cm*sin(Htheta);
+    G4double sinCheck = sin(Htheta);
+    
+    G4double L1 = (HODO_ZPOS - 431.099 - pQ2HL/cm)*sin(Htheta) + HODOX_DIM/cm;
+    G4double R1 = (HODO_ZPOS - 431.099 - pQ2HL/cm)*sin(Htheta) - HODOX_DIM/cm;
+
+    G4double L1X   = L1 * cm;                       G4double L6X = (L1+distBetween*(6-1)) * cm;    G4double R4X   = (R1-distBetween*(4-1)) * cm;
+    G4double L2X   = (L1 +distBetween*(2-1)) * cm;  G4double L7X   = (L1+distBetween*(7-1)) * cm;  G4double R5X   = (R1-distBetween*(5-1)) * cm;
+    G4double L3X   = (L1+distBetween*(3-1)) * cm;   G4double R1X   = R1 * cm;                      G4double R6X   = (R1-distBetween*(6-1)) * cm;
+    G4double L4X   = (L1+distBetween*(4-1)) * cm;   G4double R2X   = (R1-distBetween*(2-1)) * cm;  G4double R7X   = (R1-distBetween*(7-1)) * cm;	
+    G4double L5X   = (L1+distBetween*(5-1)) * cm;   G4double R3X   = (R1-distBetween*(3-1)) * cm;  
   
 	
     //Y positions
@@ -588,24 +596,23 @@ G4VPhysicalVolume* MolPolDetectorConstruction::Construct() {
     // z position of nth left box = 1119.8 - HODOX_DIM*sin(pRotH1)*(n-1)
     //'' '' ''  nth right box = 1119.8 + HODOX_DIM*sin(pRotH1)*(n-1)
 
-    G4double L1_Z = 1109.0 - 0.6*sin(Htheta); //initial offset because there is no centeral box (#of boxes is an even number)
-    G4double R1_Z = 1109.0 + 0.6*sin(Htheta);
+  
     
     G4double L1Z = L1_Z * cm;                                  
-    G4double L2Z = (L1_Z - (1.2*sin(Htheta)*(2-1))) * cm;      
-    G4double L3Z = (L1_Z - (1.2*sin(Htheta)*(3-1))) * cm;      
-    G4double L4Z = (L1_Z - (1.2*sin(Htheta)*(4-1))) * cm;      
-    G4double L5Z = (L1_Z - (1.2*sin(Htheta)*(5-1))) * cm; 
-    G4double L6Z = (L1_Z - (1.2*sin(Htheta)*(6-1))) * cm;
-    G4double L7Z = (L1_Z - (1.2*sin(Htheta)*(7-1))) * cm;
+    G4double L2Z = (L1_Z - (distBetween*sin(Htheta)*(2-1))) * cm;      
+    G4double L3Z = (L1_Z - (distBetween*sin(Htheta)*(3-1))) * cm;      
+    G4double L4Z = (L1_Z - (distBetween*sin(Htheta)*(4-1))) * cm;      
+    G4double L5Z = (L1_Z - (distBetween*sin(Htheta)*(5-1))) * cm; 
+    G4double L6Z = (L1_Z - (distBetween*sin(Htheta)*(6-1))) * cm;
+    G4double L7Z = (L1_Z - (distBetween*sin(Htheta)*(7-1))) * cm;
   
     G4double R1Z = R1_Z * cm;
-    G4double R2Z = (R1_Z + (1.2*sin(Htheta)*(2-1))) * cm;
-    G4double R3Z = (R1_Z + (1.2*sin(Htheta)*(3-1))) * cm;
-    G4double R4Z = (R1_Z + (1.2*sin(Htheta)*(4-1))) * cm;
-    G4double R5Z = (R1_Z + (1.2*sin(Htheta)*(5-1))) * cm;
-    G4double R6Z = (R1_Z + (1.2*sin(Htheta)*(6-1))) * cm;
-    G4double R7Z = (R1_Z + (1.2*sin(Htheta)*(7-1))) * cm;
+    G4double R2Z = (R1_Z + (distBetween*sin(Htheta)*(2-1))) * cm;
+    G4double R3Z = (R1_Z + (distBetween*sin(Htheta)*(3-1))) * cm;
+    G4double R4Z = (R1_Z + (distBetween*sin(Htheta)*(4-1))) * cm;
+    G4double R5Z = (R1_Z + (distBetween*sin(Htheta)*(5-1))) * cm;
+    G4double R6Z = (R1_Z + (distBetween*sin(Htheta)*(6-1))) * cm;
+    G4double R7Z = (R1_Z + (distBetween*sin(Htheta)*(7-1))) * cm;
 
     //Creating the 14 hodoscope boxes
     G4VSolid* HODOBOX1  = new G4Box ( "HODOBOX1 "  , HODOX_DIM, HODOY_DIM, HODOZ_DIM );
@@ -743,85 +750,28 @@ G4VPhysicalVolume* MolPolDetectorConstruction::Construct() {
 
   //////////////////////////////////////////////////////////////  (╯°□°）╯︵ ┻━┻
     // HODOSCOPE 2
-
- //X, Y and Z Dimmensions
-	
-    G4double HODOX_DIM_2 = 0.6 * cm;
-    G4double HODOY_DIM_2 = 4.0 * cm;
-    G4double HODOZ_DIM_2 = 0.4 * cm;
-    G4double HODOSplitY_2 = 2.0 * cm;
-
- G4double Htheta_2 = -3.25 * deg;
-	
-    //X positions of each hodoscope segment
-    //The middle of the hodoscope is located at x= -20.468cm 
-    //The first hodoscope to the left (L1) of the center is centered at x=21.068, to the right of the center (R1) x=19.868
-    //The formula to find the center point of the nth hodoscope to the left: 21.068 + 1.2*(n-1)
-    // For the right: -19.868 - 1.2*(n-1)
-    
-    G4double L1_2 = -41.391 + 0.6;
-    G4double R1_2 = -41.391 - 0.6;
-
-    G4double L1X_2   = L1_2 * cm;               G4double L6X_2 = (L1_2+1.2*(6-1)) * cm;    G4double R4X_2   = (R1_2-1.2*(4-1)) * cm;
-    G4double L2X_2   = (L1_2 +1.2*(2-1)) * cm;  G4double L7X_2   = (L1_2+1.2*(7-1)) * cm;  G4double R5X_2   = (R1_2-1.2*(5-1)) * cm;
-    G4double L3X_2   = (L1_2+1.2*(3-1)) * cm;   G4double R1X_2   = R1_2 * cm;              G4double R6X_2   = (R1_2-1.2*(6-1)) * cm;
-    G4double L4X_2   = (L1_2+1.2*(4-1)) * cm;   G4double R2X_2   = (R1_2-1.2*(2-1)) * cm;  G4double R7X_2   =  (R1_2-1.2*(7-1)) * cm;	
-    G4double L5X_2   = (L1_2+1.2*(5-1)) * cm;   G4double R3X_2   = (R1_2-1.2*(3-1)) * cm;  
-  
-	
-	
-    //Y and Z positions
-    G4double HODOY_2   = 0 * cm;
-    G4double HODOSplitNegY_2 = -2.0 * cm;
-    G4double HODOSplitPosY_2 = 2.0 * cm;
-
-//Z positions
-    //Z position of the middle of the entire hodoscope: 1119.8 cm
-    //nth box has a z-offset of 1.2*sin(3.25)*(n-1)
-    // z position of nth left box = 1100.3 - HODOX_DIM*sin(pRotH1)*(n-1)
-    //'' '' ''  nth right box = 1119.8 + HODOX_DIM*sin(pRotH1)*(n-1)
-
-    G4double L1_Z_2 = 1109.0 + 0.6*sin(Htheta); //initial offset because there is no centeral box (#of boxes is an even number)
-    G4double R1_Z_2 = 1109.0 - 0.6*sin(Htheta);
-    
-    G4double L1Z_2 = L1_Z * cm;                                  
-    G4double L2Z_2 = (L1_Z + (1.2*sin(Htheta)*(2-1))) * cm;      
-    G4double L3Z_2 = (L1_Z + (1.2*sin(Htheta)*(3-1))) * cm;      
-    G4double L4Z_2 = (L1_Z + (1.2*sin(Htheta)*(4-1))) * cm;      
-    G4double L5Z_2 = (L1_Z + (1.2*sin(Htheta)*(5-1))) * cm; 
-    G4double L6Z_2 = (L1_Z + (1.2*sin(Htheta)*(6-1))) * cm;
-    G4double L7Z_2 = (L1_Z + (1.2*sin(Htheta)*(7-1))) * cm;
-  
-    G4double R1Z_2 = R1_Z * cm;
-    G4double R2Z_2 = (R1_Z - (1.2*sin(Htheta)*(2-1))) * cm;
-    G4double R3Z_2 = (R1_Z - (1.2*sin(Htheta)*(3-1))) * cm;
-    G4double R4Z_2 = (R1_Z - (1.2*sin(Htheta)*(4-1))) * cm;
-    G4double R5Z_2 = (R1_Z - (1.2*sin(Htheta)*(5-1))) * cm;
-    G4double R6Z_2 = (R1_Z - (1.2*sin(Htheta)*(6-1))) * cm;
-    G4double R7Z_2 = (R1_Z - (1.2*sin(Htheta)*(7-1))) * cm;
-
 	
     G4RotationMatrix* pRotH2 = new G4RotationMatrix();
     pRotH2->rotateY(-3.25*deg);
-  
+    
 
 	//Creating the 14 hodoscope boxes
-        G4VSolid* HODOBOX012  = new G4Box ( "HODOBOX012 "  , HODOX_DIM_2, HODOY_DIM_2, HODOZ_DIM_2 );
-	G4VSolid* HODOBOX22  = new G4Box ( "HODOBOX22 "  , HODOX_DIM_2, HODOY_DIM_2, HODOZ_DIM_2 );
-	G4VSolid* HODOBOX32  = new G4Box ( "HODOBOX32 "  , HODOX_DIM_2, HODOSplitY_2, HODOZ_DIM_2 );
-	G4VSolid* HODOBOX32Split = new G4Box ( "HODOBOX32Split" , HODOX_DIM_2, HODOSplitY_2,  HODOZ_DIM_2);
-	G4VSolid* HODOBOX42  = new G4Box ( "HODOBOX42"  , HODOX_DIM_2, HODOY_DIM_2, HODOZ_DIM_2 );
-	G4VSolid* HODOBOX52  = new G4Box ( "HODOBOX52 "  , HODOX_DIM_2, HODOY_DIM_2, HODOZ_DIM_2 );
-	G4VSolid* HODOBOX62  = new G4Box ( "HODOBOX62 "  , HODOX_DIM_2, HODOY_DIM_2, HODOZ_DIM_2 );
-	G4VSolid* HODOBOX72  = new G4Box ( "HODOBOX72 "  , HODOX_DIM_2, HODOY_DIM_2, HODOZ_DIM_2 );
-	G4VSolid* HODOBOX82  = new G4Box ( "HODOBOX82 "  , HODOX_DIM_2, HODOY_DIM_2, HODOZ_DIM_2 );
-	G4VSolid* HODOBOX92  = new G4Box ( "HODOBOX92 "  , HODOX_DIM_2, HODOY_DIM_2, HODOZ_DIM_2 );
-	G4VSolid* HODOBOX102  = new G4Box ( "HODOBOX102"  , HODOX_DIM_2, HODOY_DIM_2, HODOZ_DIM_2 );
-	G4VSolid* HODOBOX112  = new G4Box ( "HODOBOX112 "  , HODOX_DIM_2, HODOY_DIM_2, HODOZ_DIM_2 );
-	G4VSolid* HODOBOX122  = new G4Box ( "HODOBOX122 "  , HODOX_DIM_2, HODOSplitY_2, HODOZ_DIM_2 );
-	G4VSolid* HODOBOX122Split = new G4Box ( "HODOBOX122Split" , HODOX_DIM_2, HODOSplitY_2,  HODOZ_DIM_2);
-	G4VSolid* HODOBOX132  = new G4Box ( "HODOBOX132 "  , HODOX_DIM_2, HODOY_DIM_2, HODOZ_DIM_2 );
-	G4VSolid* HODOBOX142  = new G4Box ( "HODOBOX142 "  , HODOX_DIM_2, HODOY_DIM_2, HODOZ_DIM_2 );
+        G4VSolid* HODOBOX012  = new G4Box ( "HODOBOX012 "  , HODOX_DIM, HODOY_DIM, HODOZ_DIM );
+	G4VSolid* HODOBOX22  = new G4Box ( "HODOBOX22 "  , HODOX_DIM, HODOY_DIM, HODOZ_DIM );
+	G4VSolid* HODOBOX32  = new G4Box ( "HODOBOX32 "  , HODOX_DIM, HODOSplitY, HODOZ_DIM );
+	G4VSolid* HODOBOX32Split = new G4Box ( "HODOBOX32Split" , HODOX_DIM, HODOSplitY,  HODOZ_DIM);
+	G4VSolid* HODOBOX42  = new G4Box ( "HODOBOX42"  , HODOX_DIM, HODOY_DIM, HODOZ_DIM );
+	G4VSolid* HODOBOX52  = new G4Box ( "HODOBOX52 "  , HODOX_DIM, HODOY_DIM, HODOZ_DIM );
+	G4VSolid* HODOBOX62  = new G4Box ( "HODOBOX62 "  , HODOX_DIM, HODOY_DIM, HODOZ_DIM );
+	G4VSolid* HODOBOX72  = new G4Box ( "HODOBOX72 "  , HODOX_DIM, HODOY_DIM, HODOZ_DIM );
+	G4VSolid* HODOBOX82  = new G4Box ( "HODOBOX82 "  , HODOX_DIM, HODOY_DIM, HODOZ_DIM );
+	G4VSolid* HODOBOX92  = new G4Box ( "HODOBOX92 "  , HODOX_DIM, HODOY_DIM, HODOZ_DIM );
+	G4VSolid* HODOBOX102  = new G4Box ( "HODOBOX102"  , HODOX_DIM, HODOY_DIM, HODOZ_DIM );
+	G4VSolid* HODOBOX112  = new G4Box ( "HODOBOX112 "  , HODOX_DIM, HODOY_DIM, HODOZ_DIM );
+	G4VSolid* HODOBOX122  = new G4Box ( "HODOBOX122 "  , HODOX_DIM, HODOSplitY, HODOZ_DIM );
+	G4VSolid* HODOBOX122Split = new G4Box ( "HODOBOX122Split" , HODOX_DIM, HODOSplitY,  HODOZ_DIM);
+	G4VSolid* HODOBOX132  = new G4Box ( "HODOBOX132 "  , HODOX_DIM, HODOY_DIM, HODOZ_DIM );
+	G4VSolid* HODOBOX142  = new G4Box ( "HODOBOX142 "  , HODOX_DIM, HODOY_DIM, HODOZ_DIM );
 	
 	
 	G4LogicalVolume* HODO012Logical = new G4LogicalVolume(HODOBOX012, scint, "HODO012",0,0,0);
@@ -922,22 +872,22 @@ G4VPhysicalVolume* MolPolDetectorConstruction::Construct() {
     
 		
 		
-	new G4PVPlacement(pRotH2,G4ThreeVector(L7X_2, HODOY_2, L7Z_2),HODO012Logical,"HODO_012",world_log,0,0,fCheckOverlaps);
-	new G4PVPlacement(pRotH2,G4ThreeVector(L6X_2, HODOY_2, L6Z_2),HODO22Logical,"HODO_22",world_log,0,0,fCheckOverlaps);
-	new G4PVPlacement(pRotH2,G4ThreeVector(L5X_2, HODOSplitPosY_2, L5Z_2),HODO32Logical,"HODO_32",world_log,0,0,fCheckOverlaps);
-	new G4PVPlacement(pRotH2,G4ThreeVector(L5X_2, HODOSplitNegY_2, L5Z_2),HODO32SplitLogical,"HODO_32Lower",world_log,0,0,fCheckOverlaps);
-	new G4PVPlacement(pRotH2,G4ThreeVector(L4X_2, HODOY_2, L4Z_2),HODO42Logical,"HODO_42",world_log,0,0,fCheckOverlaps);
-	new G4PVPlacement(pRotH2,G4ThreeVector(L3X_2, HODOY_2, L3Z_2),HODO52Logical,"HODO_52",world_log,0,0,fCheckOverlaps);
-	new G4PVPlacement(pRotH2,G4ThreeVector(L2X_2, HODOY_2, L2Z_2),HODO62Logical,"HODO_62",world_log,0,0,fCheckOverlaps);	
-	new G4PVPlacement(pRotH2,G4ThreeVector(L1X_2, HODOY_2, L1Z_2),HODO72Logical,"HODO_72",world_log,0,0,fCheckOverlaps);
-	new G4PVPlacement(pRotH2,G4ThreeVector(R1X_2, HODOY_2, R1Z_2),HODO82Logical,"HODO_82",world_log,0,0,fCheckOverlaps);
-	new G4PVPlacement(pRotH2,G4ThreeVector(R2X_2, HODOY_2, R2Z_2),HODO92Logical,"HODO_92",world_log,0,0,fCheckOverlaps);
-	new G4PVPlacement(pRotH2,G4ThreeVector(R3X_2, HODOY_2, R3Z_2),HODO102Logical,"HODO_102",world_log,0,0,fCheckOverlaps);
-	new G4PVPlacement(pRotH2,G4ThreeVector(R4X_2, HODOY_2, R4Z_2),HODO112Logical,"HODO_112",world_log,0,0,fCheckOverlaps);
-	new G4PVPlacement(pRotH2,G4ThreeVector(R5X_2, HODOSplitPosY_2, R5Z_2),HODO122Logical,"HODO_122",world_log,0,0,fCheckOverlaps);
-	new G4PVPlacement(pRotH2,G4ThreeVector(R5X_2, HODOSplitNegY_2, R5Z_2),HODO32SplitLogical,"HODO_122Lower",world_log,0,0,fCheckOverlaps);
-	new G4PVPlacement(pRotH2,G4ThreeVector(R6X_2, HODOY_2, R6Z_2),HODO132Logical,"HODO_132",world_log,0,0,fCheckOverlaps);
-	new G4PVPlacement(pRotH2,G4ThreeVector(R7X_2, HODOY_2, R7Z_2),HODO142Logical,"HODO_142",world_log,0,0,fCheckOverlaps);
+	new G4PVPlacement(pRotH2,G4ThreeVector(-L7X, HODOY, L7Z),HODO012Logical,"HODO_012",world_log,0,0,fCheckOverlaps);
+	new G4PVPlacement(pRotH2,G4ThreeVector(-L6X, HODOY, L6Z),HODO22Logical,"HODO2",world_log,0,0,fCheckOverlaps);
+	new G4PVPlacement(pRotH2,G4ThreeVector(-L5X, HODOSplitPosY, L5Z),HODO32Logical,"HODO_32",world_log,0,0,fCheckOverlaps);
+	new G4PVPlacement(pRotH2,G4ThreeVector(-L5X, HODOSplitNegY, L5Z),HODO32SplitLogical,"HODO_32Lower",world_log,0,0,fCheckOverlaps);
+	new G4PVPlacement(pRotH2,G4ThreeVector(-L4X, HODOY, L4Z),HODO42Logical,"HODO_42",world_log,0,0,fCheckOverlaps);
+	new G4PVPlacement(pRotH2,G4ThreeVector(-L3X, HODOY, L3Z),HODO52Logical,"HODO_52",world_log,0,0,fCheckOverlaps);
+	new G4PVPlacement(pRotH2,G4ThreeVector(-L2X, HODOY, L2Z),HODO62Logical,"HODO_62",world_log,0,0,fCheckOverlaps);	
+	new G4PVPlacement(pRotH2,G4ThreeVector(-L1X, HODOY, L1Z),HODO72Logical,"HODO_72",world_log,0,0,fCheckOverlaps);
+	new G4PVPlacement(pRotH2,G4ThreeVector(-R1X, HODOY, R1Z),HODO82Logical,"HODO_82",world_log,0,0,fCheckOverlaps);
+	new G4PVPlacement(pRotH2,G4ThreeVector(-R2X, HODOY, R2Z),HODO92Logical,"HODO_92",world_log,0,0,fCheckOverlaps);
+	new G4PVPlacement(pRotH2,G4ThreeVector(-R3X, HODOY, R3Z),HODO102Logical,"HODO_102",world_log,0,0,fCheckOverlaps);
+	new G4PVPlacement(pRotH2,G4ThreeVector(-R4X, HODOY, R4Z),HODO112Logical,"HODO_112",world_log,0,0,fCheckOverlaps);
+	new G4PVPlacement(pRotH2,G4ThreeVector(-R5X, HODOSplitPosY, R5Z),HODO122Logical,"HODO_122",world_log,0,0,fCheckOverlaps);
+	new G4PVPlacement(pRotH2,G4ThreeVector(-R5X, HODOSplitNegY, R5Z),HODO32SplitLogical,"HODO_122Lower",world_log,0,0,fCheckOverlaps);
+	new G4PVPlacement(pRotH2,G4ThreeVector(-R6X, HODOY, R6Z),HODO132Logical,"HODO_132",world_log,0,0,fCheckOverlaps);
+	new G4PVPlacement(pRotH2,G4ThreeVector(-R7X, HODOY, R7Z),HODO142Logical,"HODO_142",world_log,0,0,fCheckOverlaps);
 	
        
 
