@@ -3,7 +3,6 @@
 
 #include "MolPolEMField.hh"
 #include "MolPolQuad.hh"
-#include "MolPolDipole.hh"
 #include "MolPolSolenoid.hh"
 
 class G4FieldManager;
@@ -56,15 +55,6 @@ public:
   void UpdateFieldFZB3();
   void SetBField3VFZB3(G4double fieldGradient);
   G4FieldManager* GetFieldManagerFZB3(){return fLocalFieldManagerFZB3;}
-  //Local field  FZB4
-  void UpdateFieldFZB4();
-  void SetBField3VFZB4(G4double fieldGradient);
-  G4FieldManager* GetFieldManagerFZB4(){return fLocalFieldManagerFZB4;}
-  //Local field  FZB5
-  void UpdateFieldFZB5();
-  void SetBField3VFZB5(G4double fieldGradient);
-  G4FieldManager* GetFieldManagerFZB5(){return fLocalFieldManagerFZB5;}
-
   //Local field  FZB6
   void UpdateFieldFZB6();
   void SetBField3VFZB6(G4double fieldGradient);
@@ -78,16 +68,12 @@ public:
   G4double                    fQ1A;
   G4double                    fQ2A;
   G4double                    fQ3A;
-  G4double                    fQ4A;
-  G4double                    fQ5A;
   G4double                    fQ6A;
 
   //external input field (pole tip) values
   G4double                    fQ1T;
   G4double                    fQ2T;
   G4double                    fQ3T;
-  G4double                    fQ4T;
-  G4double                    fQ5T;
   G4double                    fQ6T;
 
 private:
@@ -100,8 +86,6 @@ private:
   G4MagInt_Driver*            fIntgrDriverFZB1;
   G4MagInt_Driver*            fIntgrDriverFZB2;
   G4MagInt_Driver*            fIntgrDriverFZB3;
-  G4MagInt_Driver*            fIntgrDriverFZB4;
-  G4MagInt_Driver*            fIntgrDriverFZB5;
   G4MagInt_Driver*            fIntgrDriverFZB6;
 
   MolPolEMFieldMessenger*     fFieldMessenger;
@@ -125,16 +109,6 @@ private:
   G4ChordFinder*              fChordFinderFZB3 ;
   G4MagIntegratorStepper*     fStepperFZB3 ;
   G4FieldManager*             fLocalFieldManagerFZB3;
-  MolPolQuad*                fMagFieldFZB4 ;
-  G4Mag_UsualEqRhs*           fEquationFZB4 ;
-  G4ChordFinder*              fChordFinderFZB4 ;
-  G4MagIntegratorStepper*     fStepperFZB4 ;
-  G4FieldManager*             fLocalFieldManagerFZB4;
-  MolPolDipole*                fMagFieldFZB5 ;
-  G4Mag_UsualEqRhs*           fEquationFZB5 ;
-  G4ChordFinder*              fChordFinderFZB5 ;
-  G4MagIntegratorStepper*     fStepperFZB5 ;
-  G4FieldManager*             fLocalFieldManagerFZB5;
   MolPolSolenoid*             fMagFieldFZB6 ;
   G4Mag_UsualEqRhs*           fEquationFZB6 ;
   G4ChordFinder*              fChordFinderFZB6 ;

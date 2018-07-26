@@ -20,8 +20,6 @@
 /field/setQ1T             -0.171
 /field/setQ2T             0.131
 /field/setQ3T             0.096
-/field/setQ4T             0.206
-/field/setQ5T             0.700
 
 #/MolPol/emin             1.063 GeV
 #/MolPol/emax             1.063 GeV

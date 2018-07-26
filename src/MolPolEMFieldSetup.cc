@@ -6,7 +6,6 @@
 #include "G4EquationOfMotion.hh"
 #include "G4EqMagElectricField.hh"
 #include "MolPolQuad.hh"
-#include "MolPolDipole.hh"
 #include "MolPolSolenoid.hh"
 #include "G4Mag_UsualEqRhs.hh"
 #include "G4MagIntegratorStepper.hh"
@@ -43,15 +42,11 @@ MolPolEMFieldSetup::MolPolEMFieldSetup()
   fQ1A = 0;
   fQ2A = 0;
   fQ3A = 0;
-  fQ4A = 0;
-  fQ5A = 0;
   fQ6A = 0;
 
   fQ1T = 0;
   fQ2T = 0;
   fQ3T = 0;
-  fQ4T = 0;
-  fQ5T = 0;
   fQ6T = 0;
 
   InitialseAll();
@@ -75,36 +70,28 @@ void MolPolEMFieldSetup::InitialseAll()
 
   G4RotationMatrix* NOROT = new G4RotationMatrix;
 
-  G4double ORIGINQ1 =  75.19 * cm;
-  G4double ORIGINQ2 = 140.46 * cm;
-  G4double ORIGINQ3 = 209.08 * cm;
-  G4double ORIGINQ4 = 274.59 * cm;
-  G4double ORIGIND  = 423.4  * cm;
-  G4double ORIGINQ6 = 6.9    * cm;
+  G4double ORIGINQ1 =  85.0 * cm;
+  G4double ORIGINQ2 = 297.8 * cm;
+  G4double ORIGINQ3 = 431.1 * cm;
+  G4double ORIGINQ6 = 0.0    * cm;
 
-  G4double BORERADIUS = 5.08 * cm;
+  G4double BORERADIUS = 5.08 * cm;//what is this?
 
   fMagSourceMode = 1;
 
   G4double KAPPA1 = 0.;
   G4double KAPPA2 = 0.;
   G4double KAPPA3 = 0.;
-  G4double KAPPA4 = 0.;
-  G4double DIPOLE = 0.;
   G4double SOLENOID = 0.;
 
   if( fMagSourceMode == 0 ){
       KAPPA1 = CalA2T(fQ1A, 1) / BORERADIUS;
       KAPPA2 = CalA2T(fQ2A, 2) / BORERADIUS;
       KAPPA3 = CalA2T(fQ3A, 3) / BORERADIUS;
-      KAPPA4 = CalA2T(fQ4A, 4) / BORERADIUS;
-      DIPOLE = CalA2T(fQ5A, 5);
   } else if( fMagSourceMode == 1){
       KAPPA1 = fQ1T * tesla / BORERADIUS;
       KAPPA2 = fQ2T * tesla / BORERADIUS;
       KAPPA3 = fQ3T * tesla / BORERADIUS;
-      KAPPA4 = fQ4T * tesla / BORERADIUS;
-      DIPOLE = fQ5T * tesla;
   }
 
   SOLENOID = fQ6T * tesla;
@@ -113,18 +100,14 @@ void MolPolEMFieldSetup::InitialseAll()
   G4cout << "fQ1T: " << fQ1T << G4endl;
   G4cout << "fQ2T: " << fQ2T << G4endl;
   G4cout << "fQ3T: " << fQ3T << G4endl;
-  G4cout << "fQ4T: " << fQ4T << G4endl;
-  G4cout << "fQ5T: " << fQ5T << G4endl;
   G4cout << "fQ6T: " << fQ6T << G4endl;
 
   G4cout << __PRETTY_FUNCTION__ <<"\t at line: "<<__LINE__<<G4endl;
   G4cout << "\tfMagSourceMode: "<<fMagSourceMode<<G4endl
 	 << "\tKAPPA1: "<<KAPPA1/(tesla / m)<< " tesla/m"<<G4endl
-	 << "\tKAPPA1: "<<KAPPA2/(tesla / m)<< " tesla/m"<<G4endl
-	 << "\tKAPPA1: "<<KAPPA3/(tesla / m)<< " tesla/m"<<G4endl
-	 << "\tKAPPA1: "<<KAPPA4/(tesla / m)<< " tesla/m"<<G4endl
-	 << "\tDIPOLE: "<<DIPOLE/tesla<< " tesla"<<G4endl
-   << "\tSOLEND: "<<SOLENOID/tesla<< " tesla"<<G4endl;
+	 << "\tKAPPA2: "<<KAPPA2/(tesla / m)<< " tesla/m"<<G4endl
+	 << "\tKAPPA3: "<<KAPPA3/(tesla / m)<< " tesla/m"<<G4endl
+   << "\tSOLENOID: "<<SOLENOID/tesla<< " tesla"<<G4endl;
 
   //MolPolQuad(G4double pGradient, G4ThreeVector pOrigin, G4RotationMatrix* pMatrix, G4double pRadius)
   fMagFieldFZB1 = new MolPolQuad(KAPPA1, G4ThreeVector(0.0, 0.0, ORIGINQ1), NOROT, BORERADIUS);
@@ -147,20 +130,6 @@ void MolPolEMFieldSetup::InitialseAll()
   fLocalFieldManagerFZB3 = new G4FieldManager();
   fChordFinderFZB3 = 0;
   UpdateFieldFZB3();
-
-  fMagFieldFZB4 = new MolPolQuad(KAPPA4, G4ThreeVector(0.0, 0.0, ORIGINQ4), NOROT, BORERADIUS);
-  fEquationFZB4 = new G4Mag_UsualEqRhs(fMagFieldFZB4);
-  fStepperFZB4  = new G4ClassicalRK4(fEquationFZB4);
-  fLocalFieldManagerFZB4 = new G4FieldManager();
-  fChordFinderFZB4 = 0;
-  UpdateFieldFZB4();
-
-  fMagFieldFZB5 = new MolPolDipole(DIPOLE, G4ThreeVector(0.0, 0.0, ORIGIND), NOROT);
-  fEquationFZB5 = new G4Mag_UsualEqRhs(fMagFieldFZB5);
-  fStepperFZB5  = new G4ClassicalRK4(fEquationFZB5);
-  fLocalFieldManagerFZB5 = new G4FieldManager();
-  fChordFinderFZB5 = 0;
-  UpdateFieldFZB5();
 
   fMagFieldFZB6 = new MolPolSolenoid(SOLENOID, 0, G4ThreeVector(0.0, 0.0, ORIGINQ6));
   fEquationFZB6 = new G4Mag_UsualEqRhs(fMagFieldFZB6);
@@ -190,34 +159,26 @@ void MolPolEMFieldSetup::UpdateConfiguration(){
 
   G4RotationMatrix* NOROT = new G4RotationMatrix;
 
-  G4double ORIGINQ1 =  75.19 * cm;
-  G4double ORIGINQ2 = 140.46 * cm;
-  G4double ORIGINQ3 = 209.08 * cm;
-  G4double ORIGINQ4 = 274.59 * cm;
-  G4double ORIGIND  = 423.4  * cm;
-  G4double ORIGINQ6 = 6.9    * cm;
+  G4double ORIGINQ1 =  85.0 * cm;
+  G4double ORIGINQ2 = 297.8 * cm;
+  G4double ORIGINQ3 = 431.1 * cm;
+  G4double ORIGINQ6 = 0.0 * cm;
 
-  G4double BORERADIUS = 5.08 * cm;
+  G4double BORERADIUS = 5.08 * cm;//what is this for our magnets?
 
   G4double KAPPA1 = 0.;
   G4double KAPPA2 = 0.;
   G4double KAPPA3 = 0.;
-  G4double KAPPA4 = 0.;
-  G4double DIPOLE = 0.;
   G4double SOLENOID = 0.;
 
   if( fMagSourceMode == 0 ){
       KAPPA1 = CalA2T(fQ1A, 1) / BORERADIUS;
       KAPPA2 = CalA2T(fQ2A, 2) / BORERADIUS;
       KAPPA3 = CalA2T(fQ3A, 3) / BORERADIUS;
-      KAPPA4 = CalA2T(fQ4A, 4) / BORERADIUS;
-      DIPOLE = CalA2T(fQ5A, 5);
   } else if( fMagSourceMode == 1){
       KAPPA1 = fQ1T * tesla / BORERADIUS;
       KAPPA2 = fQ2T * tesla / BORERADIUS;
       KAPPA3 = fQ3T * tesla / BORERADIUS;
-      KAPPA4 = fQ4T * tesla / BORERADIUS;
-      DIPOLE = fQ5T * tesla;
   }
 
   SOLENOID = fQ6T * tesla;
@@ -226,24 +187,18 @@ void MolPolEMFieldSetup::UpdateConfiguration(){
   G4cout << "fQ1T: " << fQ1T << G4endl;
   G4cout << "fQ2T: " << fQ2T << G4endl;
   G4cout << "fQ3T: " << fQ3T << G4endl;
-  G4cout << "fQ4T: " << fQ4T << G4endl;
-  G4cout << "fQ5T: " << fQ5T << G4endl;
   G4cout << "fQ6T: " << fQ6T << G4endl;
 
   G4cout << __PRETTY_FUNCTION__ <<"\t at line: "<<__LINE__<<G4endl;
   G4cout << "\tfMagSourceMode: "<<fMagSourceMode<<G4endl
 	 << "\tKAPPA1: "<<KAPPA1/(tesla / m)<< " tesla/m"<<G4endl
-	 << "\tKAPPA1: "<<KAPPA2/(tesla / m)<< " tesla/m"<<G4endl
-	 << "\tKAPPA1: "<<KAPPA3/(tesla / m)<< " tesla/m"<<G4endl
-	 << "\tKAPPA1: "<<KAPPA4/(tesla / m)<< " tesla/m"<<G4endl
-	 << "\tDIPOLE: "<<DIPOLE/tesla<< " tesla"<<G4endl
-   << "\tSOLEND: "<<SOLENOID/tesla<< " tesla"<<G4endl;
+	 << "\tKAPPA2: "<<KAPPA2/(tesla / m)<< " tesla/m"<<G4endl
+	 << "\tKAPPA3: "<<KAPPA3/(tesla / m)<< " tesla/m"<<G4endl
+   << "\tSOLENOID: "<<SOLENOID/tesla<< " tesla"<<G4endl;
 
   fMagFieldFZB1->UpdateQuad(KAPPA1, G4ThreeVector(0.0, 0.0, ORIGINQ1), NOROT, BORERADIUS);
   fMagFieldFZB2->UpdateQuad(KAPPA2, G4ThreeVector(0.0, 0.0, ORIGINQ2), NOROT, BORERADIUS);
   fMagFieldFZB3->UpdateQuad(KAPPA3, G4ThreeVector(0.0, 0.0, ORIGINQ3), NOROT, BORERADIUS);
-  fMagFieldFZB4->UpdateQuad(KAPPA4, G4ThreeVector(0.0, 0.0, ORIGINQ4), NOROT, BORERADIUS);
-  fMagFieldFZB5->UpdateDipole(DIPOLE, G4ThreeVector(0.0, 0.0, ORIGIND), NOROT);
   fMagFieldFZB6->UpdateSolenoid(SOLENOID, 0, G4ThreeVector(0.0, 0.0, ORIGINQ6));
 }
 
@@ -306,29 +261,6 @@ void MolPolEMFieldSetup::UpdateFieldFZB3()
 }
 
 /////////////////////////////////////////////////////////////////////////////
-void MolPolEMFieldSetup::UpdateFieldFZB4()
-{
-
-  fLocalFieldManagerFZB4->SetDetectorField(fMagFieldFZB4);
-
-  if(fChordFinderFZB4) delete fChordFinderFZB4;
-  fIntgrDriverFZB4 = new G4MagInt_Driver(fMinStep,fStepperFZB4,fStepperFZB4->GetNumberOfVariables());
-  fChordFinderFZB4 = new G4ChordFinder((G4MagneticField*) fMagFieldFZB4, fMinStep, fStepperFZB4);
-  fLocalFieldManagerFZB4->SetChordFinder( fChordFinderFZB4 );
-
-}
-
-void MolPolEMFieldSetup::UpdateFieldFZB5()
-{
-
-  fLocalFieldManagerFZB5->SetDetectorField(fMagFieldFZB5);
-
-  if(fChordFinderFZB5) delete fChordFinderFZB5;
-  fIntgrDriverFZB5 = new G4MagInt_Driver(fMinStep,fStepperFZB5,fStepperFZB5->GetNumberOfVariables());
-  fChordFinderFZB5 = new G4ChordFinder((G4MagneticField*) fMagFieldFZB5, fMinStep, fStepperFZB5);
-  fLocalFieldManagerFZB5->SetChordFinder( fChordFinderFZB5 );
-
-}
 
 void MolPolEMFieldSetup::UpdateFieldFZB6()
 {
@@ -381,59 +313,47 @@ void MolPolEMFieldSetup::SetStepper()
 
 
 ///////////////////////////////////////////////////////////////////////////////
-// Current to Field Calculation (paprameters from Sasha)
-// Return field at the pole tip (Quadrupole)
+// Current to Field Calculation (paprameters from quads_subs.f)
+// Return field at the pole tip in Tesla (Quadrupole)
 
 G4double MolPolEMFieldSetup::CalA2T(G4double current, G4int magnet)
 {
 
-  G4double gl1 = 0;
-  G4double gl2 = 0;
-  G4double gln = 0;
+ 
   G4double fld = 0;
+  G4double a = 0.;
+  G4double b = 0.;
+  G4double c = 0.;
+  G4double d = 0.;
+  G4double f = 0.;
 
-  G4double cn = current / 300.;
   if(magnet == 1)
     {
-      // Moller Quad Q1/MQO1H01/LARGE/new/white
-      gl1 = (.0110605+5.33237*cn-.0142794*pow(cn,2)+.259313*pow(cn,3));
-      gln = (gl1+0.0058174*pow(cn,4)-0.831887*pow(cn,5));
-      fld = gln*10.*5.08/36.5723;
+      //Los Alamos quad
+      a = -0.17085*pow(10.0,-6.);
+      b = 0.166073*pow(10.0,-2.);
+      c = 0.12525*pow(10.0,-1.); 
+
+      fld = a*current*current + b*current + c;
     }
-  else if(magnet == 2)
+  else if(magnet == 2 || magnet ==3)
     {
-      // Moller Quad Q2/PATSY/MQM1H02/SMALL/RED
-      gl1=(0.0196438+5.35443*cn+0.0297273*pow(cn,2)+0.103505*pow(cn,3));
-      gln=(gl1-0.0449275*pow(cn,4)-0.211868*pow(cn,5));
-      fld=gln*10.*5.08/44.76;
+      //Argonne quads
+      f = -0.86527*pow(10.0,-13.);
+      a = 0.23769*pow(10.0,-10.);
+      b = 0.79144*pow(10.0,-7.);
+      c = 0.10542*pow(10.0,-2.);
+      d = 0.70794*pow(10.0,-2.);
+
+      fld =  f*current*current*current*current + a*current*current*current + b*current*current + c*current + d;
     }
-  else if(magnet == 3)
-    {
-      // Moller Quad Q3/TESSA/MQO1H03/LARGE/BLUE
-      gl1=(0.000632446+5.15178*cn-0.00262778*pow(cn,2));
-      gl2=(-0.107635*pow(cn,3)+0.00209902*pow(cn,4));
-      gln=(gl1+gl2-0.640635*pow(cn,5));
-      fld=gln*10.*5.08/36.74 ;
-    }
-  else if(magnet == 4)
-    {
-      // Moller Quad Q4/FELICIA/MQO1H03A/LARGE/BLUE
-      gl1=(0.0001732+5.2119*cn-0.000732518*pow(cn,2));
-      gl2=(-0.133423*pow(cn,3)+0.000618402*pow(cn,4));
-      gln=(gl1+gl2-0.647082*pow(cn,5));
-      fld=gln*10.*5.08/36.50;
-    }
-  else if(magnet == 5)
-    {
-      // Moller Dipole LILLY/MMA1H01/Blue
-      fld=(-0.39026E-04+0.027051*current-0.17799E-08*pow(current,2));
-    }
+ 
   else
     {
       //wrong magnet setup
       fld = 0.0;
     }
 
-  return fld * 0.1 * tesla;
+  return fld; //units in tesla
 
 }

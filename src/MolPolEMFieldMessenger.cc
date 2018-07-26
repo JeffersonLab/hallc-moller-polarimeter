@@ -32,13 +32,6 @@ MolPolEMFieldMessenger::MolPolEMFieldMessenger(MolPolEMFieldSetup* fieldSetup)
   fQ3ACmd->SetGuidance("Set Q3 current");
   fQ3ACmd->SetParameterName("Q3A", false);
 
-  fQ4ACmd = new G4UIcmdWithADouble("/field/setQ4A", this);
-  fQ4ACmd->SetGuidance("Set Q4 current");
-  fQ4ACmd->SetParameterName("Q4A", false);
-
-  fQ5ACmd = new G4UIcmdWithADouble("/field/setQ5A", this);
-  fQ5ACmd->SetGuidance("Set Dipole current");
-  fQ5ACmd->SetParameterName("Q5A", false);
 
   fQ6ACmd = new G4UIcmdWithADouble("/field/setQ6A", this);
   fQ6ACmd->SetGuidance("Set Dipole current");
@@ -55,14 +48,6 @@ MolPolEMFieldMessenger::MolPolEMFieldMessenger(MolPolEMFieldSetup* fieldSetup)
   fQ3TCmd = new G4UIcmdWithADouble("/field/setQ3T", this);
   fQ3TCmd->SetGuidance("Set Q3 field in Tesla");
   fQ3TCmd->SetParameterName("Q3T", false);
-
-  fQ4TCmd = new G4UIcmdWithADouble("/field/setQ4T", this);
-  fQ4TCmd->SetGuidance("Set Q4 field in Tesla");
-  fQ4TCmd->SetParameterName("Q4T", false);
-
-  fQ5TCmd = new G4UIcmdWithADouble("/field/setQ5T", this);
-  fQ5TCmd->SetGuidance("Set Dipole field in Tesla");
-  fQ5TCmd->SetParameterName("Q5T", false);
 
   fQ6TCmd = new G4UIcmdWithADouble("/field/setQ6T", this);
   fQ6TCmd->SetGuidance("Set Holding field in Tesla");
@@ -83,13 +68,9 @@ MolPolEMFieldMessenger::~MolPolEMFieldMessenger()
   delete fQ1ACmd;
   delete fQ2ACmd;
   delete fQ3ACmd;
-  delete fQ4ACmd;
-  delete fQ5ACmd;
   delete fQ1TCmd;
   delete fQ2TCmd;
   delete fQ3TCmd;
-  delete fQ4TCmd;
-  delete fQ5TCmd;
 
 }
 
@@ -110,12 +91,6 @@ void MolPolEMFieldMessenger::SetNewValue( G4UIcommand* cmd, G4String newValue)
   }else if( cmd == fQ3ACmd ){
     G4double x = fQ3ACmd->GetNewDoubleValue(newValue);
     fEMfieldSetup->fQ3A = x;
-  }else if( cmd == fQ4ACmd ){
-    G4double x = fQ4ACmd->GetNewDoubleValue(newValue);
-    fEMfieldSetup->fQ4A = x;
-  }else if( cmd == fQ5ACmd ){
-    G4double x = fQ5ACmd->GetNewDoubleValue(newValue);
-    fEMfieldSetup->fQ5A = x;
   }else if( cmd == fQ6ACmd ){
     G4double x = fQ6ACmd->GetNewDoubleValue(newValue);
     fEMfieldSetup->fQ6A = x;
@@ -128,12 +103,6 @@ void MolPolEMFieldMessenger::SetNewValue( G4UIcommand* cmd, G4String newValue)
   }else if( cmd == fQ3TCmd ){
     G4double x = fQ3TCmd->GetNewDoubleValue(newValue);
     fEMfieldSetup->fQ3T = x;
-  }else if( cmd == fQ4TCmd ){
-    G4double x = fQ4TCmd->GetNewDoubleValue(newValue);
-    fEMfieldSetup->fQ4T = x;
-  }else if( cmd == fQ5TCmd ){
-    G4double x = fQ5TCmd->GetNewDoubleValue(newValue);
-    fEMfieldSetup->fQ5T = x;
   }else if( cmd == fQ6TCmd ){
     G4double x = fQ6TCmd->GetNewDoubleValue(newValue);
     fEMfieldSetup->fQ6T = x;

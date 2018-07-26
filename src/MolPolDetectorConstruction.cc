@@ -55,13 +55,13 @@ G4VPhysicalVolume* MolPolDetectorConstruction::Construct() {
   G4double alphaMatStd = 0.50;
   G4double alphaTarget = 0.85;
   G4VisAttributes* IronVisAtt = new G4VisAttributes( G4Colour( 10./255., 10./255.,10./255.,alphaTarget) );
-  G4VisAttributes* LeadVisAtt = new G4VisAttributes( G4Colour(149./255.,149./255.,100./255.,alphaMatStd) );
+  //G4VisAttributes* LeadVisAtt = new G4VisAttributes( G4Colour(149./255.,149./255.,100./255.,alphaMatStd) );
   G4VisAttributes* SteelVisAtt= new G4VisAttributes( G4Colour(  0./255., 80./255.,225./255.,alphaMatStd) );
   G4VisAttributes* AlumVisAtt = new G4VisAttributes( G4Colour(  0./255.,237./255.,  0./255.,alphaMatStd) );
   G4VisAttributes* VacVisAtt  = new G4VisAttributes( G4Colour(255./255.,255./255.,255./255.,alphaVacuum) );
   G4VisAttributes* CuVisAtt   = new G4VisAttributes( G4Colour(178./255.,102./255., 26./255.,alphaMatStd) );
   G4VisAttributes* ScintVisAtt= new G4VisAttributes( G4Colour(  0./255.,100./255.,100./255.,alphaMatStd) );
-  G4VisAttributes* DipVisAtt  = new G4VisAttributes( G4Colour(  0./255., 80./255.,225./255.,alphaVacuum) );
+  //G4VisAttributes* DipVisAtt  = new G4VisAttributes( G4Colour(  0./255., 80./255.,225./255.,alphaVacuum) );
 
 
   //////////////////////////////////////////////////////////////  (╯°□°）╯︵ ┻━┻
@@ -71,14 +71,14 @@ G4VPhysicalVolume* MolPolDetectorConstruction::Construct() {
 
   G4Element* N  = new G4Element("Nitrogen", "N", z=7 , a=14.01*g/mole);
   G4Element* O  = new G4Element("Oxygen"  , "O", z=8 , a=16.00*g/mole);
-  G4Element* H  = new G4Element("Hydrogen", "H", z=1 , a=1.01 *g/mole);
-  G4Element* C  = new G4Element("Carbon",   "C", z=6, a=12.01*g/mole);
+  //G4Element* H  = new G4Element("Hydrogen", "H", z=1 , a=1.01 *g/mole);
+  //G4Element* C  = new G4Element("Carbon",   "C", z=6, a=12.01*g/mole);
   G4Element* As  = new G4Element("Arsen","As", z=33, a=74.92*g/mole);
 
   G4Element* Al = new G4Element("Aluminum", "Al", z=13, a=26.98*g/mole);
   G4Element* Fe = new G4Element("Iron"   , "Fe", z=26, a=55.845*g/mole);
   G4Element* Si = new G4Element("Silicon", "Si", z=14, a=28.09 *g/mole);
-  G4Element* Pb = new G4Element("Lead", "Pb", z=82., a=207.19*g/mole);
+  //G4Element* Pb = new G4Element("Lead", "Pb", z=82., a=207.19*g/mole);
 
   density = 0.787 * g/cm3;
   a = 55.85 * g /mole;
@@ -94,7 +94,7 @@ G4VPhysicalVolume* MolPolDetectorConstruction::Construct() {
 
   density = 11.35*g/cm3;
   a = 207.19*g/mole;
-  G4Material* lead = new G4Material("lead", z=82, a, density);
+  //G4Material* lead = new G4Material("lead", z=82, a, density);
 
   density = 8.960*g/cm3;
   a = 63.55*g/mole;
@@ -123,6 +123,8 @@ G4VPhysicalVolume* MolPolDetectorConstruction::Construct() {
   G4Material* As2O3 = new G4Material("As2O3", density= 3.738*g/cm3, nel=2);
   As2O3->AddElement( As, 2 );
   As2O3->AddElement( O,  3 );
+
+  //Lead glass:
   G4Material* LgTF1 = new G4Material("LgTF1", density= 3.86*g/cm3 , nel=5 ); 
   LgTF1->AddMaterial( LeadOxide   , 0.5120 );
   LgTF1->AddMaterial( SilicOxide  , 0.4130 );
@@ -140,16 +142,16 @@ G4VPhysicalVolume* MolPolDetectorConstruction::Construct() {
 
   /////////////////////////////////////////////////////////////
   //Defining Variables
+  G4double theta = 3.25 * deg;
 
   G4RotationMatrix* RotPos = new G4RotationMatrix();
-  RotPos->rotateY(3.25*deg);
+  RotPos->rotateY(theta);
 
   G4RotationMatrix* RotNeg = new G4RotationMatrix();
-  RotNeg->rotateY(-3.25*deg);
+  RotNeg->rotateY(-theta);
 
   G4double ZeroR = 0.0 * cm;
 
-  G4double theta = 3.25 * deg;
 
 
   //////////////////////////////////////////////////////////////  (╯°□°）╯︵ ┻━┻
@@ -158,8 +160,6 @@ G4VPhysicalVolume* MolPolDetectorConstruction::Construct() {
   G4FieldManager* Q1FieldManager = mEMFieldSetup->GetFieldManagerFZB1();
   G4FieldManager* Q2FieldManager = mEMFieldSetup->GetFieldManagerFZB2();
   G4FieldManager* Q3FieldManager = mEMFieldSetup->GetFieldManagerFZB3();
-  G4FieldManager* Q4FieldManager = mEMFieldSetup->GetFieldManagerFZB4();
-  G4FieldManager* DFieldManager  = mEMFieldSetup->GetFieldManagerFZB5();
   G4FieldManager* Q6FieldManager = mEMFieldSetup->GetFieldManagerFZB6();
   G4bool allLocal = true;
 
@@ -170,7 +170,7 @@ G4VPhysicalVolume* MolPolDetectorConstruction::Construct() {
   G4VSolid* MTATSolid = new G4Tubs( "MTATTube", pMTATRin, pMTATRout, pMTATHLZ, 0.0, 360.0 * deg );
   G4LogicalVolume* MTATLogical = new G4LogicalVolume(MTATSolid, iron, "Target", 0, 0, 0);
   MTATLogical->SetVisAttributes(IronVisAtt);
-  new G4PVPlacement(0, G4ThreeVector(0,0,pMTATPos_Z), MTATLogical, "Target", world_log, 0, 0, fCheckOverlaps);
+  new G4PVPlacement(0, G4ThreeVector( pMTATPos_X,pMTATPos_Y,pMTATPos_Z), MTATLogical, "Target", world_log, 0, 0, fCheckOverlaps);
 
 
   ///////////////////////////////////////////////////////////////
@@ -214,9 +214,19 @@ G4VPhysicalVolume* MolPolDetectorConstruction::Construct() {
   new G4PVPlacement(0, G4ThreeVector(ChamExit_X, ChamExit_Y, ChamExit_Z),ChamExitLogical,"TrgtChamExit",world_log, 0, 0, fCheckOverlaps);
   new G4PVPlacement(0, G4ThreeVector(ChamExit_X, ChamExit_Y, ChamExit_Z), ChamExit2Logical, "TrgtChamExitInner", world_log,0,0,fCheckOverlaps);
 
+  //////////////////////////////////////////////////////////////  (╯°□°）╯︵ ┻━┻
+  // HELMHOLTZ COIL Magnetic Volume
+  // TODO: don't know pQ6Rout, pQ6HL (look this up)
+  G4double pQ6Rin  =  0    * cm;  G4double pQ6Rout =  25.4 * cm;  G4double pQ6HL   = 38.1  * cm;  G4double pQ6Pos_z=   0.0 * cm;
+  G4VSolid* Q6MagSolid = new G4Tubs( "Q6MagTubs", pQ6Rin, pQ6Rout, pQ6HL, 0.0, 360.0 * deg);
+  G4LogicalVolume* Q6MagLogical = new G4LogicalVolume(Q6MagSolid, Vacuum, "Q6Mag", 0,0,0);
+  Q6MagLogical->SetFieldManager(Q6FieldManager, allLocal);
+  Q6MagLogical->SetVisAttributes(VacVisAtt);
+  new G4PVPlacement(0, G4ThreeVector(0, 0, pQ6Pos_z), Q6MagLogical, "Q6Mag", world_log, 0, 0, fCheckOverlaps);
 
   //////////////////////////////////////////////////////////////  (╯°□°）╯︵ ┻━┻
   //Solenoid 'Physical' Volume
+  //TODO: Check this physical colume, this is the same as before
   G4double pHLMZRin = 5.10 * cm;   G4double pHLMZRout = 15.0 * cm;   G4double pHLMZHLZ = 5.0 * cm;
   G4double pHLMZ1Pos_X = 0.0 * cm;   G4double pHLMZ1Pos_Y = 0.0 * cm;   G4double pHLMZ1Pos_Z = -12.6 * cm;
   G4double pHLMZ2Pos_X = 0.0 * cm;   G4double pHLMZ2Pos_Y = 0.0 * cm;   G4double pHLMZ2Pos_Z = 12.6 * cm;
@@ -229,8 +239,8 @@ G4VPhysicalVolume* MolPolDetectorConstruction::Construct() {
   HLMZ1Logical->SetVisAttributes(CuVisAtt);
   HLMZ2Logical->SetVisAttributes(CuVisAtt);
 
-  new G4PVPlacement(0, G4ThreeVector(0, 0, pHLMZ1Pos_Z), HLMZ1Logical, "Helmholtz1", world_log, 0, 0, fCheckOverlaps);
-  new G4PVPlacement(0, G4ThreeVector(0, 0, pHLMZ2Pos_Z), HLMZ2Logical, "Helmholtz2", world_log, 0, 0, fCheckOverlaps);
+  new G4PVPlacement(0, G4ThreeVector( pHLMZ1Pos_X, pHLMZ1Pos_Y, pHLMZ1Pos_Z), HLMZ1Logical, "Helmholtz1", world_log, 0, 0, fCheckOverlaps);
+  new G4PVPlacement(0, G4ThreeVector( pHLMZ2Pos_X,  pHLMZ2Pos_Y, pHLMZ2Pos_Z), HLMZ2Logical, "Helmholtz2", world_log, 0, 0, fCheckOverlaps);
  
 
   ///////////////////////////////////////////////////////////////

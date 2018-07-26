@@ -7,8 +7,8 @@ MolPolSolenoid::MolPolSolenoid(G4double Bz, G4double fz, G4ThreeVector pOrigin)
   fBfield = Bz;
   fFringeZ = fz;
   fOrigin = pOrigin;
-  fFieldLength = 38.1 * cm;
-  fFieldRadius = 25.4 * cm;
+  fFieldLength = 38.1 * cm;//currently Hall A
+  fFieldRadius = 25.4 * cm;//currently Hall A
 }
 
 void MolPolSolenoid::UpdateSolenoid(G4double Bz, G4double fz, G4ThreeVector pOrigin)
@@ -16,8 +16,8 @@ void MolPolSolenoid::UpdateSolenoid(G4double Bz, G4double fz, G4ThreeVector pOri
   fBfield = Bz;
   fFringeZ = fz;
   fOrigin = pOrigin;
-  fFieldLength = 38.1 * cm;
-  fFieldRadius = 25.4 * cm;
+  fFieldLength = 38.1 * cm;//currently Hall A
+  fFieldRadius = 25.4 * cm;//currently Hall A
 }
 
 MolPolSolenoid::~MolPolSolenoid()
