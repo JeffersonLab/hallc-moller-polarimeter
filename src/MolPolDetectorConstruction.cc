@@ -191,7 +191,7 @@ G4VPhysicalVolume* MolPolDetectorConstruction::Construct() {
   G4SubtractionSolid*Cham_Tub = new G4SubtractionSolid( "Cham_Tub", Cham1, Cham2, 0, G4ThreeVector(ChamberPos_X,ChamberPos_Y,ChamberPos_Z) );
   G4LogicalVolume*ChamLogical = new G4LogicalVolume(Cham_Tub, aluminum, "ChamLogical" , 0, 0, 0 );
   G4LogicalVolume*Cham2Logical = new G4LogicalVolume( Cham2, Vacuum, "Cham2Logical", 0, 0, 0);
-  ChamLogical -> SetVisAttributes(SteelVisAtt);
+  ChamLogical -> SetVisAttributes(AlumVisAtt);
   Cham2Logical -> SetVisAttributes(VacVisAtt);
   new G4PVPlacement(ChamRot, G4ThreeVector(ChamberPos_X, ChamberPos_Y, ChamberPos_Z),ChamLogical, "TrgtCham", world_log, 0, 0, fCheckOverlaps);
   new G4PVPlacement(ChamRot, G4ThreeVector(ChamberPos_X, ChamberPos_Y, ChamberPos_Z), Cham2Logical, "VacTrgtCham",world_log, 0, 0, fCheckOverlaps);
@@ -209,7 +209,7 @@ G4VPhysicalVolume* MolPolDetectorConstruction::Construct() {
   G4SubtractionSolid*Cham_Exit = new G4SubtractionSolid("Cham_Exit",ChamExit, ChamExit2,0,G4ThreeVector(ChamExit_X,ChamExit_Y,ChamExit_Z) );
   G4LogicalVolume*ChamExitLogical = new G4LogicalVolume(Cham_Exit, aluminum, "ChamExitLogical", 0,0,0);
   G4LogicalVolume*ChamExit2Logical = new G4LogicalVolume(ChamExit2, Vacuum, "ChamExit2Logical",0,0,0);
-  ChamExitLogical -> SetVisAttributes(SteelVisAtt);
+  ChamExitLogical -> SetVisAttributes(AlumVisAtt);
   ChamExit2Logical -> SetVisAttributes(VacVisAtt);
   new G4PVPlacement(0, G4ThreeVector(ChamExit_X, ChamExit_Y, ChamExit_Z),ChamExitLogical,"TrgtChamExit",world_log, 0, 0, fCheckOverlaps);
   new G4PVPlacement(0, G4ThreeVector(ChamExit_X, ChamExit_Y, ChamExit_Z), ChamExit2Logical, "TrgtChamExitInner", world_log,0,0,fCheckOverlaps);
