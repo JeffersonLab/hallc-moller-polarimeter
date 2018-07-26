@@ -263,14 +263,14 @@ G4VPhysicalVolume* MolPolDetectorConstruction::Construct() {
 
   //Argonne Quads
   G4double pQ2Rin  =  12.7 * cm;  G4double pQ2Rout = 86.36 * cm;  G4double pQ2HL   = 61.595 * cm;  G4double pQ2Pos_Z= 297.8 * cm;
-  G4double pQ3Rin  =  12.7 * cm;  G4double pQ3Rout = 86.36 * cm;  G4double pQ3HL   = 61.595 * cm;  G4double pQ3Pos_Z= 431.1 * cm;
+  G4double pQ3Pos_Z= 431.1 * cm;
 
   G4VSolid* Q1Solid = new G4Tubs( "Q1Tubs", pQ1Rin, pQ1Rout, pQ1HL, 0.0, 360.0 * deg );
   G4VSolid* Q2Solid = new G4Tubs( "Q2Tubs", pQ2Rin, pQ2Rout, pQ2HL, 0.0, 360.0 * deg );
-  G4VSolid* Q3Solid = new G4Tubs( "Q3Tubs", pQ3Rin, pQ3Rout, pQ3HL, 0.0, 360.0 * deg );
+  G4VSolid* Q3Solid = new G4Tubs( "Q3Tubs", pQ2Rin, pQ2Rout, pQ2HL, 0.0, 360.0 * deg );
   G4VSolid* Q1MagSolid = new G4Tubs( "Q1MagTubs", 0., pQ1Rin, pQ1HL, 0.0, 360.0 * deg );
   G4VSolid* Q2MagSolid = new G4Tubs( "Q2MagTubs", 0., pQ2Rin, pQ2HL, 0.0, 360.0 * deg );
-  G4VSolid* Q3MagSolid = new G4Tubs( "Q3MagTubs", 0., pQ3Rin, pQ3HL, 0.0, 360.0 * deg );
+  G4VSolid* Q3MagSolid = new G4Tubs( "Q3MagTubs", 0., pQ2Rin, pQ2HL, 0.0, 360.0 * deg );
 
   G4LogicalVolume* Q1Logical = new G4LogicalVolume(Q1Solid,siliconsteel,"Q1Logical",0,0,0);
   G4LogicalVolume* Q2Logical = new G4LogicalVolume(Q2Solid,siliconsteel,"Q2Logical",0,0,0);
@@ -355,7 +355,7 @@ G4VPhysicalVolume* MolPolDetectorConstruction::Construct() {
   G4double RCH = 10.0 * cm;
  
   G4double RC_PosZ = Trap_Z + dz + RCH;
-  G4double RC_X = tan(theta)*(RC_PosZ/cm-431.099+61.595) * cm;
+  G4double RC_X = tan(theta)*(RC_PosZ/cm-431.099+pQ2HL/cm) * cm;
   G4double RC_Y = 0.0 * cm;
   
     
@@ -488,8 +488,8 @@ G4VPhysicalVolume* MolPolDetectorConstruction::Construct() {
   new G4PVPlacement(0,G4ThreeVector(0,0,pQ1Pos_Z + pQ1HL ), Q1EXLogical,"VP.Q1.Exit",world_log,0,0,fCheckOverlaps);
   new G4PVPlacement(0,G4ThreeVector(0,0,pQ2Pos_Z - pQ2HL ), Q2ENLogical,"VP.Q2.Entr",world_log,0,0,fCheckOverlaps);
   new G4PVPlacement(0,G4ThreeVector(0,0,pQ2Pos_Z + pQ2HL ), Q2EXLogical,"VP.Q2.Exit",world_log,0,0,fCheckOverlaps);
-  new G4PVPlacement(0,G4ThreeVector(0,0,pQ3Pos_Z - pQ3HL ), Q3ENLogical,"VP.Q3.Entr",world_log,0,0,fCheckOverlaps);
-  new G4PVPlacement(0,G4ThreeVector(0,0,pQ3Pos_Z + pQ3HL ), Q3EXLogical,"VP.Q3.Exit",world_log,0,0,fCheckOverlaps);
+  new G4PVPlacement(0,G4ThreeVector(0,0,pQ3Pos_Z - pQ2HL ), Q3ENLogical,"VP.Q3.Entr",world_log,0,0,fCheckOverlaps);
+  new G4PVPlacement(0,G4ThreeVector(0,0,pQ3Pos_Z + pQ2HL ), Q3EXLogical,"VP.Q3.Exit",world_log,0,0,fCheckOverlaps);
 
  
   //////////////////////////////////////////////////////////////  (╯°□°）╯︵ ┻━┻
