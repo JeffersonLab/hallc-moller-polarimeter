@@ -259,7 +259,7 @@ G4VPhysicalVolume* MolPolDetectorConstruction::Construct() {
   G4SubtractionSolid*Coll_Vac = new G4SubtractionSolid("Coll_Vac", CollVac, CollVac2, 0, G4ThreeVector(CollVacPosX,CollVacPosY,CollVacPosZ) );
   G4LogicalVolume*CollVacLogical = new G4LogicalVolume(Coll_Vac, aluminum, "CollVacLogical",0,0,0);
   G4LogicalVolume*CollVac2Logical = new G4LogicalVolume(CollVac2, Vacuum, "InnerCollVacLogical",0,0,0);
-  CollVacLogical -> SetVisAttributes(SteelVisAtt);
+  CollVacLogical -> SetVisAttributes(AlumVisAtt);
   CollVac2Logical -> SetVisAttributes(VacVisAtt);
   
   new G4PVPlacement(0,G4ThreeVector(CollVacPosX,CollVacPosY,CollVacPosZ), CollVacLogical,"CollVacOut",world_log, 0, 0, fCheckOverlaps);
@@ -335,7 +335,7 @@ G4VPhysicalVolume* MolPolDetectorConstruction::Construct() {
   G4SubtractionSolid* YVacCan = new G4SubtractionSolid("YVacCan", OuterTrap, InnerTrap, 0, G4ThreeVector(Trap_X, Trap_Y, Trap_Z) );
   G4LogicalVolume* YVacCanLogical = new G4LogicalVolume( YVacCan, aluminum, "YVacCanLogical", 0, 0, 0);
   G4LogicalVolume* YVacCanInLogical  = new G4LogicalVolume( InnerTrap, Vacuum, "YVacCanInLogical", 0, 0, 0);
-  YVacCanLogical->SetVisAttributes(SteelVisAtt);
+  YVacCanLogical->SetVisAttributes(AlumVisAtt);
   YVacCanInLogical->SetVisAttributes(VacVisAtt);
   new G4PVPlacement(0,G4ThreeVector(Trap_X,Trap_Y,Trap_Z), YVacCanLogical,"YVacCanOut",world_log, 0, 0, fCheckOverlaps);
   new G4PVPlacement(0,G4ThreeVector(Trap_X,Trap_Y,Trap_Z), YVacCanInLogical,"YVacCanIn",world_log, 0, 0, fCheckOverlaps);
@@ -354,7 +354,7 @@ G4VPhysicalVolume* MolPolDetectorConstruction::Construct() {
   G4SubtractionSolid* YVacOpen = new G4SubtractionSolid("YVacOpen", YVOpeningOut, YVOpeningIn, 0, G4ThreeVector(YVOpening_X, YVOpening_Y,YVOpening_Z) );
   G4LogicalVolume* YVacOpenLogical = new G4LogicalVolume( YVacOpen, aluminum, "YVacOpenLogical", 0, 0, 0);
   G4LogicalVolume* YVacOpenInLogical = new G4LogicalVolume( YVOpeningIn, Vacuum, "YVacOpenInLogical", 0, 0, 0);
-  YVacOpenLogical->SetVisAttributes(SteelVisAtt);
+  YVacOpenLogical->SetVisAttributes(AlumVisAtt);
   YVacOpenInLogical->SetVisAttributes(VacVisAtt);
   new G4PVPlacement(0,G4ThreeVector(YVOpening_X,YVOpening_Y,YVOpening_Z), YVacOpenLogical,"YVacCanOpening",world_log, 0, 0, fCheckOverlaps);
   new G4PVPlacement(0,G4ThreeVector(YVOpening_X,YVOpening_Y,YVOpening_Z), YVacOpenInLogical,"YVacCanOpeningInner",world_log, 0, 0, fCheckOverlaps);
@@ -375,7 +375,7 @@ G4VPhysicalVolume* MolPolDetectorConstruction::Construct() {
   G4SubtractionSolid* LRC = new G4SubtractionSolid("LRC", LRCOuter, LRCInner, 0, G4ThreeVector(RC_X, RC_Y,RC_PosZ) );
   G4LogicalVolume* LRCLogical = new G4LogicalVolume( LRC, aluminum, "LRCLogical", 0, 0, 0);
   G4LogicalVolume* LRCInLogical = new G4LogicalVolume( LRCInner, Vacuum, "LRCInLogical", 0, 0, 0);
-  LRCLogical -> SetVisAttributes(SteelVisAtt);
+  LRCLogical -> SetVisAttributes(AlumVisAtt);
   LRCInLogical -> SetVisAttributes(VacVisAtt);
   new G4PVPlacement(RotPos,G4ThreeVector(-RC_X,RC_Y,RC_PosZ), LRCLogical,"LRC",world_log, 0, 0, fCheckOverlaps);
   new G4PVPlacement(RotPos,G4ThreeVector(-RC_X,RC_Y,RC_PosZ), LRCInLogical,"LRCInner",world_log, 0, 0, fCheckOverlaps);
@@ -386,7 +386,7 @@ G4VPhysicalVolume* MolPolDetectorConstruction::Construct() {
   G4SubtractionSolid* RRC = new G4SubtractionSolid("RRC", RRCOuter, RRCInner, 0, G4ThreeVector(RC_X, RC_Y,RC_PosZ) );
   G4LogicalVolume* RRCLogical = new G4LogicalVolume( RRC, aluminum, "RRCLogical", 0, 0, 0);
   G4LogicalVolume* RRCInLogical = new G4LogicalVolume( RRCInner, Vacuum, "RRCInLogical", 0, 0, 0);
-  RRCLogical -> SetVisAttributes(SteelVisAtt);
+  RRCLogical -> SetVisAttributes(AlumVisAtt);
   RRCInLogical -> SetVisAttributes(VacVisAtt);
   new G4PVPlacement(RotNeg,G4ThreeVector(RC_X,RC_Y,RC_PosZ), RRCLogical,"RRC",world_log, 0, 0, fCheckOverlaps);
   new G4PVPlacement(RotNeg,G4ThreeVector(RC_X,RC_Y,RC_PosZ), RRCInLogical,"RRCInner",world_log, 0, 0, fCheckOverlaps);
@@ -404,7 +404,7 @@ G4VPhysicalVolume* MolPolDetectorConstruction::Construct() {
   G4SubtractionSolid* MRC = new G4SubtractionSolid("MRC", MRCOuter, MRCInner, 0, G4ThreeVector(MRC_X, MRC_Y,MRC_Z) );
   G4LogicalVolume* MRCLogical = new G4LogicalVolume( MRC, aluminum, "MRCLogical", 0, 0, 0);
   G4LogicalVolume* MRCInLogical = new G4LogicalVolume( MRCInner, Vacuum, "MRCInLogical", 0, 0, 0);
-  MRCLogical -> SetVisAttributes(SteelVisAtt);
+  MRCLogical -> SetVisAttributes(AlumVisAtt);
   MRCInLogical -> SetVisAttributes(VacVisAtt);
   new G4PVPlacement(0,G4ThreeVector(MRC_X,MRC_Y,MRC_Z), MRCLogical,"MRC",world_log, 0, 0, fCheckOverlaps);
   new G4PVPlacement(0,G4ThreeVector(MRC_X,MRC_Y,MRC_Z), MRCInLogical,"MRCInner",world_log, 0, 0, fCheckOverlaps);
