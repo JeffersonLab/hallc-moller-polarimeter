@@ -501,11 +501,70 @@ G4VPhysicalVolume* MolPolDetectorConstruction::Construct() {
   new G4PVPlacement(0,G4ThreeVector(0,0,pQ3Pos_Z - pQ2HL ), Q3ENLogical,"VP.Q3.Entr",world_log,0,0,fCheckOverlaps);
   new G4PVPlacement(0,G4ThreeVector(0,0,pQ3Pos_Z + pQ2HL ), Q3EXLogical,"VP.Q3.Exit",world_log,0,0,fCheckOverlaps);
 
+  ///////////////////////////////////////////////////////////////
+  //Collimaters
+
+  //Rotation Matrix
+  G4RotationMatrix* LeftCollRot = new G4RotationMatrix();
+  LeftCollRot->rotateY(86.75*deg);
+  LeftCollRot->rotateZ(90.0*deg);
+
+  G4RotationMatrix* RightCollRot = new G4RotationMatrix();
+  RightCollRot->rotateY(93.25*deg);
+  RightCollRot->rotateZ(90.0*deg);  
+
+  //Collimater Box Dimmensions
+  G4double Box_Y = 5.08 * cm;
+  G4double Box_X = 7.0 * cm;
+  G4double CollThick = 10.0 * cm;
+
+  //LCT = Left Collimater trapezoid
+  G4double LCT_dx2 = 2.80 * cm;
+  G4double LCT_dx1 = 4.00 * cm;
+  G4double LCT_dy = 5.08 * cm;
+  G4double LCT_dz = 7.2 * cm;
+
+  //RCT = Right Collimater trapezoid
+  G4double RCT_dx1 = 2.0 * cm;
+  G4double RCT_dx2 = 3.0*cm;
+  G4double RCT_dy = 5.08 *cm;
+  G4double RCT_dz = 7.0*cm;
+
+  //Placement
+  G4double Coll_PosX = 42.66 * cm; //have to check
+  G4double Coll_PosY = 0.0 * cm;
+  G4double Coll_PosZ = 1119.0 *cm; 
+
+  G4VSolid*CollBox = new G4Box("CollBox",Box_X, Box_Y,CollThick);
+  G4VSolid*LCT = new G4Trd("LCT", LCT_dx1, LCT_dx2, LCT_dy, LCT_dy,LCT_dz);
+  G4VSolid*RCT = new G4Trd("RCT", RCT_dx1,RCT_dx2,RCT_dy,RCT_dy,RCT_dz);
+
+  G4SubtractionSolid* LeftCollimater = new G4SubtractionSolid("Left_Collimater", CollBox, LCT, 0, G4ThreeVector(Coll_PosX, Coll_PosY, Coll_PosZ) );
+  G4SubtractionSolid* RightCollimater = new G4SubtractionSolid("Right_Collimater", CollBox, RCT, 0, G4ThreeVector(-Coll_PosX, Coll_PosY, Coll_PosZ) );
+  
+  G4LogicalVolume*LeftCollLogic = new G4LogicalVolume(LeftCollimater, LgTF1, "LeftColl_Logical",0,0,0);
+  G4LogicalVolume*LCT_Logic = new G4LogicalVolume(LCT, Vacuum, "LCT_Logical",0,0,0);
+
+  G4LogicalVolume*RightCollLogic = new G4LogicalVolume(RightCollimater, LgTF1, "RightColl_Logical",0,0,0);
+  G4LogicalVolume*RCT_Logic = new G4LogicalVolume(RCT, Vacuum, "RCT_Logical",0,0,0);
+
+  LeftCollLogic->SetVisAttributes(AlumVisAtt);
+  RightCollLogic->SetVisAttributes(AlumVisAtt);
+  LCT_Logic->SetVisAttributes(VacVisAtt);
+  RCT_Logic->SetVisAttributes(VacVisAtt);
+  
+  new G4PVPlacement(LeftCollRot,G4ThreeVector(Coll_PosX, Coll_PosY, Coll_PosZ), LeftCollLogic,"Left Collimater",world_log, 0, 0, fCheckOverlaps);
+  new G4PVPlacement(LeftCollRot,G4ThreeVector(Coll_PosX, Coll_PosY, Coll_PosZ), LCT_Logic,"Inner Left Collimater",world_log, 0, 0, fCheckOverlaps);  
+
+  new G4PVPlacement(RightCollRot,G4ThreeVector(-Coll_PosX, Coll_PosY, Coll_PosZ), RightCollLogic,"Right Collimater",world_log, 0, 0, fCheckOverlaps);
+  new G4PVPlacement(RightCollRot,G4ThreeVector(-Coll_PosX, Coll_PosY, Coll_PosZ), RCT_Logic,"Inner Right Collimater",world_log, 0, 0, fCheckOverlaps);  
+
+
  
   //////////////////////////////////////////////////////////////  (╯°□°）╯︵ ┻━┻
     //Lead Glass Detectors
 
-    G4double DistTo = 1109.3*cm; //distance to the start of the detectors
+    G4double DistTo = 1119.3*cm; //distance to the start of the detectors
 
     G4double LG_X  = 10.00 * cm;  G4double LG_Y = 7.00 * cm;  G4double LG_Z = 11.5 * cm;
     G4double LG_PosX   =  42.66 * cm;  G4double LG_PosY = 0 * cm;  G4double LG_PosZ  = (DistTo/cm + LG_Z/cm) *cm; 
