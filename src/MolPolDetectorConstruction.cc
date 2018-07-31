@@ -152,6 +152,10 @@ G4VPhysicalVolume* MolPolDetectorConstruction::Construct() {
 
   G4double ZeroR = 0.0 * cm;
 
+  G4double pQ2HL = 61.595 * cm;
+
+  G4double DistTrgtQ3 = 431.099 * cm; //Distance between the target and Q3. Useful for writing distances in terms of angles
+
 
 
   //////////////////////////////////////////////////////////////  (╯°□°）╯︵ ┻━┻
@@ -272,7 +276,7 @@ G4VPhysicalVolume* MolPolDetectorConstruction::Construct() {
   G4double pQ1Rin  =  4.7625 * cm;  G4double pQ1Rout = 20.00 * cm;  G4double pQ1HL   = 18.29 * cm;  G4double pQ1Pos_Z= 85.0 * cm;//check z position
 
   //Argonne Quads
-  G4double pQ2Rin  =  12.7 * cm;  G4double pQ2Rout = 86.36 * cm;  G4double pQ2HL   = 61.595 * cm;  G4double pQ2Pos_Z= 297.8 * cm;
+  G4double pQ2Rin  =  12.7 * cm;  G4double pQ2Rout = 86.36 * cm;  G4double pQ2Pos_Z= 297.8 * cm;
   G4double pQ3Pos_Z= 431.1 * cm;
 
   G4VSolid* Q1Solid = new G4Tubs( "Q1Tubs", pQ1Rin, pQ1Rout, pQ1HL, 0.0, 360.0 * deg );
@@ -410,34 +414,6 @@ G4VPhysicalVolume* MolPolDetectorConstruction::Construct() {
   new G4PVPlacement(0,G4ThreeVector(MRC_X,MRC_Y,MRC_Z), MRCInLogical,"MRCInner",world_log, 0, 0, fCheckOverlaps);
 
 
- ///////////////////////////////////////////////////////////////
-  //Beam Pipes after Y-vacuum can
-     
-
-  G4double BPRO1 = 12.70 * cm;
-  G4double BPRI1 = 12.5476 * cm;
-  G4double BPH1 = 177.77 * cm;
-
-  G4double BP1_X = 31.93 * cm;
-  G4double BP1_Y = 0.0 * cm;
-  G4double BP1_Z = 931.535 * cm; 
-
-  G4VSolid*BPipe1 = new G4Tubs("B_Pipe1", ZeroR, BPRO1, BPH1, 0.0, 360.0*deg);
-  G4VSolid*BPipe2 = new G4Tubs("B_PipeIn", ZeroR, BPRI1, BPH1, 0.0, 360.0*deg);
-  G4SubtractionSolid* B_Pipe = new G4SubtractionSolid("B_Pipe", BPipe1, BPipe2, 0, G4ThreeVector(BP1_X, BP1_Y, BP1_Z) );
-  G4LogicalVolume* BPipe1Logical = new G4LogicalVolume( B_Pipe, aluminum, "BPipeOutLogical", 0, 0, 0);
-  G4LogicalVolume* BPipe2Logical  = new G4LogicalVolume( BPipe2, Vacuum, "BPipeInLogical", 0, 0, 0);
-  BPipe1Logical->SetVisAttributes(AlumVisAtt);
-  BPipe2Logical->SetVisAttributes(VacVisAtt);
-  
-  new G4PVPlacement(RotNeg,G4ThreeVector(BP1_X,BP1_Y,BP1_Z), BPipe1Logical,"BPipe1Out",world_log, 0, 0, fCheckOverlaps);
-  new G4PVPlacement(RotNeg,G4ThreeVector(BP1_X,BP1_Y,BP1_Z), BPipe2Logical,"BPipe1In",world_log, 0, 0, fCheckOverlaps);
-
-  new G4PVPlacement(RotPos,G4ThreeVector(-BP1_X,BP1_Y,BP1_Z), BPipe1Logical,"BPipe2Out",world_log, 0, 0, fCheckOverlaps);
-  new G4PVPlacement(RotPos,G4ThreeVector(-BP1_X,BP1_Y,BP1_Z), BPipe2Logical,"BPipe2In",world_log, 0, 0, fCheckOverlaps);
-
-  
-
   //////////////////////////////////////////////////////////////  (╯°□°）╯︵ ┻━┻
   // Planes for Virtual Detectors
   G4VSolid*        VBSolid   = new G4Tubs("VBSolid",0,pQ1Rout, 0.00001 * mm ,0.0,360.0*deg);
@@ -514,7 +490,7 @@ G4VPhysicalVolume* MolPolDetectorConstruction::Construct() {
   RightCollRot->rotateZ(90.0*deg);  
 
   //Collimater Box Dimmensions
-  G4double Box_Y = 5.08 * cm;
+  G4double Box_Y = 5.08 * cm; //Coll width 
   G4double Box_X = 7.0 * cm;
   G4double CollThick = 10.0 * cm;
 
@@ -531,9 +507,9 @@ G4VPhysicalVolume* MolPolDetectorConstruction::Construct() {
   G4double RCT_dz = 7.0*cm;
 
   //Placement
-  G4double Coll_PosX = 42.66 * cm; //have to check
+  G4double Coll_PosZ = 1124.08 *cm; 
+  G4double Coll_PosX = ((tan(theta)) * (Coll_PosZ/cm+pQ2HL/cm-DistTrgtQ3/cm)) * cm;
   G4double Coll_PosY = 0.0 * cm;
-  G4double Coll_PosZ = 1119.0 *cm; 
 
   G4VSolid*CollBox = new G4Box("CollBox",Box_X, Box_Y,CollThick);
   G4VSolid*LCT = new G4Trd("LCT", LCT_dx1, LCT_dx2, LCT_dy, LCT_dy,LCT_dz);
@@ -563,11 +539,13 @@ G4VPhysicalVolume* MolPolDetectorConstruction::Construct() {
  
   //////////////////////////////////////////////////////////////  (╯°□°）╯︵ ┻━┻
     //Lead Glass Detectors
-
-    G4double DistTo = 1119.3*cm; //distance to the start of the detectors
-
-    G4double LG_X  = 10.00 * cm;  G4double LG_Y = 7.00 * cm;  G4double LG_Z = 11.5 * cm;
-    G4double LG_PosX   =  42.66 * cm;  G4double LG_PosY = 0 * cm;  G4double LG_PosZ  = (DistTo/cm + LG_Z/cm) *cm; 
+    G4double LG_PosZ  = 1140.66 * cm;
+    G4double LG_Y = 7.00 * cm;
+    G4double LG_X  = 10.00 * cm;
+    G4double LG_Z = 11.5 * cm;
+    G4double LG_PosY = 0 * cm;  
+ 
+    G4double LG_PosX   = ((tan(theta))* (LG_PosZ - DistTrgtQ3 + pQ2HL)/cm) * cm; 
   
     G4VSolid* MDBXSolid3  = new G4Box ( "MDBXBox3 "  , LG_X, LG_Y, LG_Z );
     G4LogicalVolume* DETLogical3 = new G4LogicalVolume(MDBXSolid3, LgTF1, "DETLogical3",0,0,0);
@@ -601,13 +579,13 @@ G4VPhysicalVolume* MolPolDetectorConstruction::Construct() {
     G4double distBetween = 2.0*HODOX_DIM/cm; 
 
     //TODO: What is the z position??? For now assumption is 1109.0cm
-    G4double HODO_ZPOS = 1109.0;//cm
+    G4double HODO_ZPOS = (Coll_PosZ/cm-Box_Y/cm-HODOZ_DIM/cm);//cm
     G4double L1_Z = HODO_ZPOS - HODOX_DIM/cm*sin(theta); //initial offset because there is no centeral box (#of boxes is an even number)
     G4double R1_Z = HODO_ZPOS + HODOX_DIM/cm*sin(theta);
     // G4double sinCheck = sin(Htheta);
     
-    G4double L1 = (HODO_ZPOS - 431.099 + pQ2HL/cm)*sin(theta) + HODOX_DIM/cm;
-    G4double R1 = (HODO_ZPOS - 431.099 + pQ2HL/cm)*sin(theta) - HODOX_DIM/cm;
+    G4double L1 = (HODO_ZPOS - 431.099 + pQ2HL/cm)*tan(theta) + HODOX_DIM/cm;
+    G4double R1 = (HODO_ZPOS - 431.099 + pQ2HL/cm)*tan(theta) - HODOX_DIM/cm;
 
     G4double L1X   = L1 * cm;                       G4double L6X = (L1+distBetween*(6-1)) * cm;    G4double R4X   = (R1-distBetween*(4-1)) * cm;
     G4double L2X   = (L1 +distBetween*(2-1)) * cm;  G4double L7X   = (L1+distBetween*(7-1)) * cm;  G4double R5X   = (R1-distBetween*(5-1)) * cm;
@@ -919,7 +897,35 @@ G4VPhysicalVolume* MolPolDetectorConstruction::Construct() {
 	new G4PVPlacement(RotNeg,G4ThreeVector(-R6X, HODOY, R6Z),HODO132Logical,"HODO_132",world_log,0,0,fCheckOverlaps);
 	new G4PVPlacement(RotNeg,G4ThreeVector(-R7X, HODOY, R7Z),HODO142Logical,"HODO_142",world_log,0,0,fCheckOverlaps);
 	
-       
+   
+
+ ///////////////////////////////////////////////////////////////
+  //Beam Pipes after Y-vacuum can
+     
+
+  G4double BPRO1 = 12.70 * cm;
+  G4double BPRI1 = 12.5476 * cm;
+  G4double BPH1 = (HODO_ZPOS*cm-HODOZ_DIM-(RC_PosZ+RCH))/2;//written to cover all empty space between Y-vacuum can and hodoscope
+
+  G4double BP1_Y = 0.0 * cm;
+  G4double BP1_Z = (RC_PosZ/cm+RCH/cm+BPH1/cm)*cm;
+  G4double BP1_X = (tan(theta)*(BP1_Z-DistTrgtQ3+pQ1HL)/cm)* cm + 2.0*cm; //have to check
+
+  G4VSolid*BPipe1 = new G4Tubs("B_Pipe1", ZeroR, BPRO1, BPH1, 0.0, 360.0*deg);
+  G4VSolid*BPipe2 = new G4Tubs("B_PipeIn", ZeroR, BPRI1, BPH1, 0.0, 360.0*deg);
+  G4SubtractionSolid* B_Pipe = new G4SubtractionSolid("B_Pipe", BPipe1, BPipe2, 0, G4ThreeVector(BP1_X, BP1_Y, BP1_Z) );
+  G4LogicalVolume* BPipe1Logical = new G4LogicalVolume( B_Pipe, aluminum, "BPipeOutLogical", 0, 0, 0);
+  G4LogicalVolume* BPipe2Logical  = new G4LogicalVolume( BPipe2, Vacuum, "BPipeInLogical", 0, 0, 0);
+  BPipe1Logical->SetVisAttributes(AlumVisAtt);
+  BPipe2Logical->SetVisAttributes(VacVisAtt);
+  
+  new G4PVPlacement(RotNeg,G4ThreeVector(BP1_X,BP1_Y,BP1_Z), BPipe1Logical,"BPipe1Out",world_log, 0, 0, fCheckOverlaps);
+  new G4PVPlacement(RotNeg,G4ThreeVector(BP1_X,BP1_Y,BP1_Z), BPipe2Logical,"BPipe1In",world_log, 0, 0, fCheckOverlaps);
+
+  new G4PVPlacement(RotPos,G4ThreeVector(-BP1_X,BP1_Y,BP1_Z), BPipe1Logical,"BPipe2Out",world_log, 0, 0, fCheckOverlaps);
+  new G4PVPlacement(RotPos,G4ThreeVector(-BP1_X,BP1_Y,BP1_Z), BPipe2Logical,"BPipe2In",world_log, 0, 0, fCheckOverlaps);
+
+      
 
 
   return world_phys;
