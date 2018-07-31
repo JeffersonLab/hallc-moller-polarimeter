@@ -526,8 +526,8 @@ G4VPhysicalVolume* MolPolDetectorConstruction::Construct() {
 
   LeftCollLogic->SetVisAttributes(AlumVisAtt);
   RightCollLogic->SetVisAttributes(AlumVisAtt);
-  LCT_Logic->SetVisAttributes(VacVisAtt);
-  RCT_Logic->SetVisAttributes(VacVisAtt);
+  LCT_Logic->SetVisAttributes(IronVisAtt);
+  RCT_Logic->SetVisAttributes(IronVisAtt);
   
   new G4PVPlacement(LeftCollRot,G4ThreeVector(Coll_PosX, Coll_PosY, Coll_PosZ), LeftCollLogic,"Left Collimater",world_log, 0, 0, fCheckOverlaps);
   new G4PVPlacement(LeftCollRot,G4ThreeVector(Coll_PosX, Coll_PosY, Coll_PosZ), LCT_Logic,"Inner Left Collimater",world_log, 0, 0, fCheckOverlaps);  
@@ -909,7 +909,7 @@ G4VPhysicalVolume* MolPolDetectorConstruction::Construct() {
 
   G4double BP1_Y = 0.0 * cm;
   G4double BP1_Z = (RC_PosZ/cm+RCH/cm+BPH1/cm)*cm;
-  G4double BP1_X = (tan(theta)*(BP1_Z-DistTrgtQ3+pQ1HL)/cm)* cm + 2.0*cm; //have to check
+  G4double BP1_X = (tan(theta)*(BP1_Z-DistTrgtQ3+pQ2HL)/cm)* cm; //have to check
 
   G4VSolid*BPipe1 = new G4Tubs("B_Pipe1", ZeroR, BPRO1, BPH1, 0.0, 360.0*deg);
   G4VSolid*BPipe2 = new G4Tubs("B_PipeIn", ZeroR, BPRI1, BPH1, 0.0, 360.0*deg);
