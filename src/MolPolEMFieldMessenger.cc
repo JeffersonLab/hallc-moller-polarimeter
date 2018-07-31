@@ -22,36 +22,36 @@ MolPolEMFieldMessenger::MolPolEMFieldMessenger(MolPolEMFieldSetup* fieldSetup)
 
   fQ1ACmd = new G4UIcmdWithADouble("/field/setQ1A", this);
   fQ1ACmd->SetGuidance("Set Q1 current");
-  fQ1ACmd->SetParameterName("Q1A", false);
+  fQ1ACmd->SetParameterName("fQ1A", false);
 
   fQ2ACmd = new G4UIcmdWithADouble("/field/setQ2A", this);
   fQ2ACmd->SetGuidance("Set Q2 current");
-  fQ2ACmd->SetParameterName("Q2A", false);
+  fQ2ACmd->SetParameterName("fQ2A", false);
 
   fQ3ACmd = new G4UIcmdWithADouble("/field/setQ3A", this);
   fQ3ACmd->SetGuidance("Set Q3 current");
-  fQ3ACmd->SetParameterName("Q3A", false);
+  fQ3ACmd->SetParameterName("fQ3A", false);
 
 
   fQ6ACmd = new G4UIcmdWithADouble("/field/setQ6A", this);
   fQ6ACmd->SetGuidance("Set Dipole current");
-  fQ6ACmd->SetParameterName("Q6A", false);
+  fQ6ACmd->SetParameterName("fQ6A", false);
 
   fQ1TCmd = new G4UIcmdWithADouble("/field/setQ1T", this);
   fQ1TCmd->SetGuidance("Set Q1 field in Tesla");
-  fQ1TCmd->SetParameterName("Q1T", false);
+  fQ1TCmd->SetParameterName("fQ1T", false);
 
   fQ2TCmd = new G4UIcmdWithADouble("/field/setQ2T", this);
   fQ2TCmd->SetGuidance("Set Q2 field in Tesla" );
-  fQ2TCmd->SetParameterName("Q2T", false);
+  fQ2TCmd->SetParameterName("fQ2T", false);
 
   fQ3TCmd = new G4UIcmdWithADouble("/field/setQ3T", this);
   fQ3TCmd->SetGuidance("Set Q3 field in Tesla");
-  fQ3TCmd->SetParameterName("Q3T", false);
+  fQ3TCmd->SetParameterName("fQ3T", false);
 
   fQ6TCmd = new G4UIcmdWithADouble("/field/setQ6T", this);
   fQ6TCmd->SetGuidance("Set Holding field in Tesla");
-  fQ6TCmd->SetParameterName("Q6T", false);
+  fQ6TCmd->SetParameterName("fQ6T", false);
 
   fUpdateCmd = new G4UIcmdWithoutParameter("/field/update",this);
   fUpdateCmd->SetGuidance("This command MUST be applied after setting field values ");

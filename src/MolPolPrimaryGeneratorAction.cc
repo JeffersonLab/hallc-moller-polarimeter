@@ -34,7 +34,7 @@ MolPolPrimaryGeneratorAction::MolPolPrimaryGeneratorAction()
   angle = 0;
 
   //SET SOME DEFAULT VALUES IF NONE ARE SET IN THE MACRO
-  fBeamE = 1.063*GeV;
+  fBeamE = 10.6*GeV;
   //Requirement (BPM values): <0.1mm
 
   fBeamPol = "long";

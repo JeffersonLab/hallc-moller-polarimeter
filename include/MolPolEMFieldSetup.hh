@@ -33,7 +33,7 @@ public:
   void SetStepper();
   void UpdateField();
 
-  void InitialseAll();
+  void InitialiseAll();
 
   inline  void SetStepperType( G4int val) { fStepperType = val ; }
   inline  G4int GetStepperType() {return fStepperType; }

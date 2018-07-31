@@ -250,24 +250,20 @@ G4VPhysicalVolume* MolPolDetectorConstruction::Construct() {
   ///////////////////////////////////////////////////////////////
   //Collimator Vacuum Can (after Los Alamos Quad)
 
-  G4double CollVacRO = 35.56 * cm;
-  G4double CollVacRI = 34.29 * cm;
+  G4double CollVacRO = 17.78*cm;
+  G4double CollVacRI = 16.51*cm;
   G4double CollVacH = 34.29 * cm;
   
   G4double CollVacPosX = 0.0 * cm;
   G4double CollVacPosY = 0.0 * cm;
   G4double CollVacPosZ = 196.85 * cm; //not sure what this actually is 
-
-  G4VSolid*CollVac = new G4Tubs("Coll_Vac",ZeroR,CollVacRO, CollVacH, 0.0, 360.0* deg);
-  G4VSolid*CollVac2 = new G4Tubs("Coll_Vac2",ZeroR,CollVacRI,CollVacH, 0.0, 360.0*deg);
-  G4SubtractionSolid*Coll_Vac = new G4SubtractionSolid("Coll_Vac", CollVac, CollVac2, 0, G4ThreeVector(CollVacPosX,CollVacPosY,CollVacPosZ) );
-  G4LogicalVolume*CollVacLogical = new G4LogicalVolume(Coll_Vac, aluminum, "CollVacLogical",0,0,0);
-  G4LogicalVolume*CollVac2Logical = new G4LogicalVolume(CollVac2, Vacuum, "InnerCollVacLogical",0,0,0);
-  CollVacLogical -> SetVisAttributes(AlumVisAtt);
-  CollVac2Logical -> SetVisAttributes(VacVisAtt);
   
-  new G4PVPlacement(0,G4ThreeVector(CollVacPosX,CollVacPosY,CollVacPosZ), CollVacLogical,"CollVacOut",world_log, 0, 0, fCheckOverlaps);
-  new G4PVPlacement(0,G4ThreeVector(CollVacPosX,CollVacPosY,CollVacPosZ), CollVac2Logical,"CollVacIn",world_log, 0, 0, fCheckOverlaps);
+  G4VSolid*CollVac = new G4Tubs("Coll_Vac",CollVacRI,CollVacRO, CollVacH, 0.0, 360.0* deg);
+  G4LogicalVolume*CollVacLogical = new G4LogicalVolume(CollVac, aluminum, "CollVacLogical",0,0,0);
+
+  CollVacLogical -> SetVisAttributes(AlumVisAtt);
+
+  new G4PVPlacement(0,G4ThreeVector(CollVacPosX,CollVacPosY,CollVacPosZ), CollVacLogical,"CollVacChamber",world_log, 0, 0, fCheckOverlaps);
 
   //////////////////////////////////////////////////////////////  (╯°□°）╯︵ ┻━┻
   // MAGNETS (Los Alamos and Argonne Quads)
