@@ -54,4 +54,5 @@ source /site/12gev_phys/production.csh 2.0
 ```
 ==== Known issues as of 6 Aug 2018 =============
 1. Detectors used to see hits, now they don't. This should be understood/fixed. 
-2. Collimators prior to quad are not in the geometry. 
+2. Solenoid field only steps through z-component. Needs to read map. 
+3. Collimators prior to quad are not in the geometry. 
